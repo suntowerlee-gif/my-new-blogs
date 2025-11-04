@@ -1,3 +1,10 @@
++++
+date = '2025-11-04T22:45:12+08:00'
+draft = false
+title = 'From Zero to Hugo+Cloudflare+Github AutoBlog'
+
++++
+
 # 🚀 从零到壹：Hugo + Cloudflare Pages 全自动博客部署记录
 
 
