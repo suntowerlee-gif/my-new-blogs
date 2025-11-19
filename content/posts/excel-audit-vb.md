@@ -93,7 +93,7 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     
     Set LogWs = ThisWorkbook.Worksheets("ChangeLogHidden")
     sUser = Environ("USERNAME") & " (" & Application.UserName & ")"
-    sTime = Format(Now, "yyyy-mm-dd HH:nn:ss")
+    sTime = Format(Now, "yyyy-mm-dd HH:mm:ss")
     
     For Each c In Target.Cells
         If c.Locked Then GoTo NextC
@@ -108,7 +108,12 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
         With LogWs
             .Cells(NextRow, 1) = Sh.Name & "!" & c.Address(False, False)
             .Cells(NextRow, 2) = sUser
-            .Cells(NextRow, 3) = sTime
+            With .Cells(NextRow, 3)
+                .ClearFormats
+                .NumberFormat = "@"
+                .Value = sTime
+                .Font.Size = 10
+            End With
             .Cells(NextRow, 4) = OldStr & " → " & NewStr
         End With
         
@@ -206,6 +211,22 @@ Public Sub 导出修改日志()
     wbNew.Close False
     MsgBox "已导出到桌面：" & SavePath, vbInformation
 End Sub
+Public Sub 修复时间格式()
+    Dim LogWs As Worksheet, LastRow As Long, i As Long
+    Set LogWs = ThisWorkbook.Worksheets("ChangeLogHidden")
+    LastRow = LogWs.Cells(LogWs.Rows.Count, 1).End(xlUp).Row
+    
+    With LogWs
+        .Range("C2:C" & LastRow).NumberFormat = "@"
+        For i = 2 To LastRow
+            If IsNumeric(.Cells(i, 3).Value) Then
+                .Cells(i, 3).Value = Format(.Cells(i, 3).Value, "yyyy-mm-dd HH:MM:SS")
+            End If
+        Next i
+        .Columns("A:D").AutoFit
+    End With
+    MsgBox "所有时间已永久修复为文字格式！", vbInformation
+End Sub
 ```
 
 ### 总结：为什么这个方案是终极答案
@@ -213,7 +234,7 @@ End Sub
 - 兼容 Excel 2007–2019–365
 - 保护状态下100%记录（不依赖批注）
 - 日志永不丢失，超级隐藏，用户永远看不到
-- 看不到
+- 时间格式严格保持hh:mm:ss，字体设定为10号字体
 - 支持一键导出、密码查看、清空（可选）
 - 公式永久隐藏，用户永远无法解保护和看到代码
 
