@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反商业贿赂合规测验</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for printing */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            /* Hide non-essential elements for print */
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                margin: 0;
+                padding: 1in;
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            /* Ensure text is black for clear printing */
+            .text-gray-800 { color: #000 !important; }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+
+<div id="app" class="container mx-auto p-4 sm:p-8 max-w-4xl">
+    <header class="text-center py-6 mb-8 border-b border-indigo-200">
+        <h1 class="text-3xl font-extrabold text-indigo-700">反商业贿赂合规实战测验</h1>
+        <p class="text-gray-600 mt-2">请仔细阅读并选择最符合合规要求的选项。</p>
+    </header>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="space-y-6">
+        <!-- Questions rendered here -->
+    </div>
+
+    <!-- Results Screen (Hidden initially) -->
+    <div id="results-screen" class="hidden">
+        
+    </div>
+</div>
+
+<script>
+    // 测验数据 (Quiz Data) - 包含10个问题
+    const quizData = [
+        {
+          question: "某销售人员为了促成一笔大额订单，私下向客户公司的采购经理承诺，若签约成功，将合同金额的3%作为“感谢费”打入该经理的个人银行账户。根据《反不正当竞争法》，这种行为属于什么？",
+          answerOptions: [
+            { text: "合法的销售佣金", rationale: "合法的佣金必须支付给具有合法经营资格的中间人，且必须如实入账，不能支付给交易相对方的工作人员。", isCorrect: false },
+            { text: "合法的商业折扣", rationale: "商业折扣必须明示并支付给交易相对方（即客户公司），且双方需如实入账，不能私下给个人。", isCorrect: false },
+            { text: "商业贿赂", rationale: "向交易相对方的工作人员提供不当利益（如回扣、感谢费）以谋取交易机会，是典型的商业贿赂行为。", isCorrect: true },
+            { text: "正常的业务招待", rationale: "直接向个人账户转账现金利益不属于业务招待，而是利益输送。", isCorrect: false }
+          ],
+          hint: "关键在于资金流向了“个人”账户且目的是为了“促成交易”。"
+        },
+        {
+          question: "根据中国《刑法》规定，向非国家工作人员行贿，数额达到多少元以上，就可能面临刑事责任（立案追诉标准）？",
+          answerOptions: [
+            { text: "5000元", rationale: "5000元尚未达到对非国家工作人员行贿罪的通常立案标准。", isCorrect: false },
+            { text: "1万元", rationale: "根据相关司法解释，对非国家工作人员行贿，数额在1万元以上的，通常应予立案追诉。", isCorrect: true },
+            { text: "5万元", rationale: "5万元已属于数额较大，但法律规定的起刑门槛通常更低。", isCorrect: false },
+            { text: "10万元", rationale: "10万元可能涉及数额巨大的认定，但不是最低的入罪门槛。", isCorrect: false }
+          ],
+          hint: "这个门槛比很多人想象的要低，通常是一个五位数的起点。"
+        },
+        {
+          question: "企业在进行合规的费用报销时，必须严格遵守“三单一致”原则。这“三单”指的是什么？",
+          answerOptions: [
+            { text: "合同、发票、银行回单", rationale: "虽然银行回单很重要，但“三单一致”通常强调的是业务发生的真实性证明链条。", isCorrect: false },
+            { text: "合同、发票、费用用途说明", rationale: "合规报销要求合同（证明业务存在）、发票（证明税务合规）和费用用途说明（证明业务合理性）的内容必须高度一致且真实。", isCorrect: true },
+            { text: "发票、收据、送货单", rationale: "这主要用于物流采购环节，不足以覆盖所有商业贿赂高风险费用的合规要求。", isCorrect: false },
+            { text: "申请单、审批单、转账单", rationale: "这是内部流程单据，不能完全证明业务背景的真实性和合规性。", isCorrect: false }
+          ],
+          hint: "这三个文件分别代表了法律关系、税务凭证和业务实质描述。"
+        },
+        {
+          question: "关于通过第三方（如咨询公司、代理商）支付费用的合规风险，以下哪种说法是正确的？",
+          answerOptions: [
+            { text: "只要与第三方签订了合同，风险就完全转移给了第三方", rationale: "企业不能通过外包来规避行贿责任，若第三方代表企业行贿，企业仍可能承担法律责任。", isCorrect: false },
+            { text: "通过第三方支付给客户方人员可以规避直接行贿的嫌疑", rationale: "这属于间接行贿，是法律严厉打击的掩盖行为，风险极高。", isCorrect: false },
+            { text: "必须对第三方进行尽职调查，核实其是否与客户方存在关联关系", rationale: "为了防止通过“空壳公司”或关联方变相行贿，企业必须对第三方进行严格的背景调查和合规管控。", isCorrect: true },
+            { text: "第三方支付的费用不需要如实入账", rationale: "所有商业支出都必须如实入账，隐瞒支出是违法的财务行为。", isCorrect: false }
+          ],
+          hint: "第三方往往是商业贿赂的“中转站”和“白手套”，法律对此不仅看合同，更看实质。"
+        },
+        {
+          question: "如果业务员小张为了完成业绩，自掏腰包给客户采购主管送了2万元现金，且未向公司汇报。关于法律责任，以下哪项描述最准确？",
+          answerOptions: [
+            { text: "因为是个人资金，所以不构成犯罪", rationale: "行贿罪的认定不完全取决于资金来源，只要是为了谋取不正当利益且数额达标，个人也构成犯罪。", isCorrect: false },
+            { text: "小张承担个人刑事责任，公司如果证明已尽合规义务可免除单位责任", rationale: "业务员个人行贿，若公司不知情且有完善的合规制度证明已尽监管义务，通常由个人承担刑事责任，公司可主张免责。", isCorrect: true },
+            { text: "公司必须承担单位犯罪责任，因为小张是公司员工", rationale: "只有当行贿是体现单位意志（如高管决策、资金来自单位）且为单位谋利时，才构成单位犯罪。", isCorrect: false },
+            { text: "只要金额不超过5万元，就不会有任何责任", rationale: "1万元以上即可能触犯刑法，且即使不构成犯罪，也违反了反不正当竞争法，面临行政处罚。", isCorrect: false }
+          ],
+          hint: "关键在于区分“个人行为”与“单位意志”，以及公司是否有完善的合规防火墙。"
+        },
+        {
+          question: "在商业活动中，关于“折扣”的合规处理，以下哪项是必须满足的条件？",
+          answerOptions: [
+            { text: "必须以现金形式支付", rationale: "现金支付难以追踪，极易被认定为贿赂，正规折扣应通过银行转账或抵扣货款。", isCorrect: false },
+            { text: "可以支付给客户方的经办人员", rationale: "折扣必须支付给交易相对方（即客户单位），支付给个人属于回扣/贿赂。", isCorrect: false },
+            { text: "不需要在合同中体现，口头约定即可", rationale: "“明示”是合法折扣的前提，必须在合同或书面协议中明确约定。", isCorrect: false },
+            { text: "必须明示并如实入账", rationale: "《反不正当竞争法》明确规定，经营者向交易相对方支付折扣的，应当如实入账。", isCorrect: true }
+          ],
+          hint: "法律允许折扣存在，但要求它必须是“阳光下”的交易，体现在财务报表中。"
+        },
+        {
+          question: "以下哪种行为属于公司财务控制中的“硬性红线”，绝对禁止操作？",
+          answerOptions: [
+            { text: "报销金额超过1000元的业务招待费", rationale: "大额招待费通常需要审批，但并非绝对禁止，只要真实合理且合规。", isCorrect: false },
+            { text: "向客户方工作人员的个人银行账户转账", rationale: "这是最典型的商业贿赂资金路径，合规制度中通常将其设为绝对禁止的红线。", isCorrect: true },
+            { text: "聘请第三方咨询公司协助调研市场", rationale: "聘请咨询公司是正常的商业行为，只要经过尽职调查且业务真实。", isCorrect: false },
+            { text: "向客户赠送印有公司Logo的小纪念品", rationale: "低价值的广告礼品通常是允许的，只要符合适度原则。", isCorrect: false }
+          ],
+          hint: "想想哪种资金流向最像是在“偷偷摸摸”输送利益。"
+        },
+        {
+          question: "关于“对非国家工作人员行贿罪”，其犯罪主体（行贿方）可以是？",
+          answerOptions: [
+            { text: "仅限于单位（企业）", rationale: "刑法规定，自然人（个人）同样可以成为该罪的犯罪主体。", isCorrect: false },
+            { text: "仅限于个人", rationale: "单位（企业）如果为了谋取不正当利益而行贿，同样构成该罪（单位犯罪）。", isCorrect: false },
+            { text: "单位和个人都可以", rationale: "《刑法》第164条规定，为谋取不正当利益，给予公司、企业或者其他单位的工作人员以财物的，数额较大的，单位和个人均可构成此罪。", isCorrect: true },
+            { text: "仅限于国有企业的员工", rationale: "该罪名针对的是向“非国家工作人员”行贿，行贿方身份不限于国企员工。", isCorrect: false }
+          ],
+          hint: "法律既惩罚“公司行贿”，也惩罚“个人行贿”。"
+        },
+        {
+          question: "如果你发现部门经理正在安排一笔虚假的“技术咨询费”支付给客户的亲属，你应该怎么做？",
+          answerOptions: [
+            { text: "假装不知道，以免得罪领导", rationale: "知情不报可能使自己卷入风险，且违反了公司的合规承诺。", isCorrect: false },
+            { text: "私下提醒客户注意隐蔽", rationale: "这属于协助掩盖违规行为，是严重的违纪甚至违法行为。", isCorrect: false },
+            { text: "立即向公司法务或合规部门举报", rationale: "这是保护自己和公司利益的正确做法，且公司有义务保护举报人。", isCorrect: true },
+            { text: "要求分一杯羹作为封口费", rationale: "这构成了共同犯罪或敲诈勒索，性质极其恶劣。", isCorrect: false }
+          ],
+          hint: "合规不仅是公司的要求，也是保护你自己不因连带责任入狱的盾牌。"
+        },
+        {
+          question: "某公司因涉嫌商业贿赂被市场监督管理部门调查。即使不构成刑事犯罪，该公司可能面临的最高行政罚款是多少（情节严重情况下）？",
+          answerOptions: [
+            { text: "100万元", rationale: "根据新修订的法条，严重违法行为的罚款上限已提高。", isCorrect: false },
+            { text: "300万元", rationale: "一般情节的罚款上限通常是300万元，但情节严重可更高。", isCorrect: false },
+            { text: "500万元", rationale: "《反不正当竞争法》规定，情节严重的，可处三百万元以上五百万元以下的罚款。", isCorrect: true },
+            { text: "1000万元", rationale: "目前的法律规定上限通常为500万元（除特殊行业外）。", isCorrect: false }
+          ],
+          hint: "这个数字足以让很多中小企业破产。"
+        }
+    ];
+
+    let userAnswers = {};
+    const totalQuestions = quizData.length;
+
+    /**
+     * 初始化函数，确保在DOM加载完成后执行测验渲染
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            console.log('DOM Content Loaded. Starting quiz rendering...');
+            renderQuiz();
+            console.log('Quiz rendering complete.');
+        } catch (e) {
+            console.error('Quiz rendering failed:', e);
+            // 在页面上显示错误提示
+            const appDiv = document.getElementById('app');
+            if (appDiv) {
+                appDiv.innerHTML += '<div class="mt-8 p-4 bg-red-100 text-red-700 border border-red-300 rounded-lg text-center font-semibold">抱歉，加载测验时发生错误。请检查浏览器控制台(F12)查看详细信息。</div>';
+            }
+        }
+    });
+
+    /**
+     * 渲染测验题目列表
+     */
+    function renderQuiz() {
+        const quizScreen = document.getElementById('quiz-screen');
+        quizScreen.innerHTML = '';
+        
+        quizData.forEach((q, qIndex) => {
+            const questionElement = document.createElement('div');
+            questionElement.className = 'bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 border border-gray-100';
+            questionElement.innerHTML = `
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                    ${qIndex + 1}. ${q.question}
+                </h2>
+                <div id="options-${qIndex}" class="space-y-3">
+                    ${q.answerOptions.map((option, oIndex) => `
+                        <label class="flex items-start p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-indigo-50 transition duration-150">
+                            <input type="radio" name="question-${qIndex}" value="${oIndex}" class="mt-1 form-radio h-4 w-4 text-indigo-600 focus:ring-indigo-500" onclick="handleAnswerChange(${qIndex}, ${oIndex})">
+                            <span class="ml-3 text-sm font-medium text-gray-700 select-none flex-grow">${option.text}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            quizScreen.appendChild(questionElement);
+        });
+
+        // 提交按钮
+        const submitButton = document.createElement('button');
+        submitButton.id = 'submit-button';
+        submitButton.textContent = '提交测验并查看结果';
+        submitButton.className = 'w-full mt-8 py-3 px-6 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition duration-300 shadow-md disabled:bg-indigo-300';
+        submitButton.disabled = true;
+        submitButton.onclick = calculateScore;
+        
+        quizScreen.appendChild(submitButton);
+    }
+
+    /**
+     * 处理用户选择的答案
+     * @param {number} qIndex - 问题索引
+     * @param {number} oIndex - 选项索引
+     */
+    function handleAnswerChange(qIndex, oIndex) {
+        userAnswers[qIndex] = oIndex;
+        checkCompletion();
+    }
+
+    /**
+     * 检查所有问题是否都已回答
+     */
+    function checkCompletion() {
+        const answeredCount = Object.keys(userAnswers).length;
+        const submitButton = document.getElementById('submit-button');
+        if (answeredCount === totalQuestions) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+    /**
+     * 计算分数并渲染结果
+     */
+    function calculateScore() {
+        let score = 0;
+        const results = [];
+
+        quizData.forEach((q, qIndex) => {
+            const selectedOptionIndex = userAnswers[qIndex];
+            const correctOption = q.answerOptions.find(opt => opt.isCorrect);
+            const selectedOption = q.answerOptions[selectedOptionIndex];
+            
+            let isCorrect = false;
+            if (selectedOption && selectedOption.isCorrect) {
+                score++;
+                isCorrect = true;
+            }
+
+            results.push({
+                question: q.question,
+                selectedText: selectedOption ? selectedOption.text : '未作答',
+                isCorrect: isCorrect,
+                correctText: correctOption.text,
+                rationale: correctOption.rationale
+            });
+        });
+
+        document.getElementById('quiz-screen').classList.add('hidden');
+        renderResults(score, results);
+    }
+
+    /**
+     * 渲染结果页面
+     * @param {number} score - 最终得分
+     * @param {Array} results - 包含详细结果的数组
+     */
+    function renderResults(score, results) {
+        const resultsScreen = document.getElementById('results-screen');
+        resultsScreen.classList.remove('hidden');
+
+        const passStatus = score >= totalQuestions * 0.8; // 80%为通过标准
+        const statusText = passStatus ? '恭喜，测验通过!' : '很遗憾，请重新学习和测验。';
+        const statusColor = passStatus ? 'bg-green-100 text-green-700 border-green-300' : 'bg-red-100 text-red-700 border-red-300';
+
+        let html = `
+            <div id="print-content" class="print-area bg-white p-8 rounded-xl shadow-2xl space-y-8">
+                <div class="text-center pb-4 border-b border-gray-200">
+                    <h2 class="text-3xl font-bold text-indigo-700">测验结果</h2>
+                    <p class="mt-2 text-xl font-medium ${statusColor} p-2 rounded-lg border">${statusText}</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <label for="tester-name" class="text-lg font-medium text-gray-700">测试者姓名：</label>
+                        <input type="text" id="tester-name" placeholder="请输入您的姓名" 
+                            class="flex-grow p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-gray-800">
+                    </div>
+                    <div class="text-center bg-indigo-50 p-4 rounded-lg">
+                        <p class="text-2xl font-semibold text-indigo-800">
+                            最终得分：<span class="text-4xl font-extrabold ml-2">${score} / ${totalQuestions}</span>
+                        </p>
+                    </div>
+                    <p class="text-sm text-gray-500 text-right">测验日期：${new Date().toLocaleDateString('zh-CN')}</p>
+                </div>
+
+                <div class="no-print space-y-6">
+                    <button onclick="printResults()" class="w-full py-3 px-6 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition duration-300 shadow-md">
+                        打印本页作为记录凭证
+                    </button>
+                    <h3 class="text-2xl font-semibold text-gray-800 border-b pb-2">答题详情与解析 (共 ${totalQuestions} 题)</h3>
+                </div>
+
+                <!-- Detailed Results -->
+                ${results.map((res, index) => `
+                    <div class="border-t pt-4">
+                        <h4 class="font-medium text-gray-800">Q${index + 1}. ${res.question}</h4>
+                        <p class="mt-2 text-sm">
+                            <span class="font-semibold ${res.isCorrect ? 'text-green-600' : 'text-red-600'}">
+                                ${res.isCorrect ? '✅ 你的选择：' : '❌ 你的选择：'}
+                            </span>
+                            ${res.selectedText}
+                        </p>
+                        ${!res.isCorrect ? `<p class="text-sm mt-1">
+                            <span class="font-semibold text-green-600">正确答案：</span> ${res.correctText}
+                        </p>` : ''}
+                        <p class="text-xs text-gray-500 mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                            **解析：** ${res.rationale}
+                        </p>
+                    </div>
+                `).join('')}
+
+                <div class="no-print mt-8 text-center">
+                    <button onclick="window.location.reload()" class="py-2 px-4 text-indigo-600 font-medium hover:text-indigo-800 transition duration-300">
+                        重新开始测验
+                    </button>
+                </div>
+            </div>
+        `;
+        resultsScreen.innerHTML = html;
+    }
+
+    /**
+     * 打印结果页面
+     */
+    function printResults() {
+        const nameInput = document.getElementById('tester-name');
+        const nameDisplay = nameInput.value.trim();
+
+        if (nameDisplay === '') {
+            nameInput.focus();
+            nameInput.placeholder = '请先输入您的姓名！';
+            nameInput.classList.add('border-red-500', 'ring-red-500');
+            // Use a message box instead of alert()
+            showTemporaryMessage('请先输入您的姓名，才能打印凭证！', 'bg-red-500');
+            return;
+        }
+
+        // Temporarily insert the name into the print area for the print output
+        const printContent = document.getElementById('print-content');
+        const namePlaceholder = printContent.querySelector('#tester-name');
+        if (namePlaceholder) {
+            // Replace the input field with a static text element for printing
+            const staticName = document.createElement('span');
+            staticName.className = 'text-lg font-semibold text-gray-800 border-b border-dashed border-gray-400 pb-0.5';
+            staticName.textContent = nameDisplay;
+            namePlaceholder.parentNode.replaceChild(staticName, namePlaceholder);
+        }
+
+        window.print();
+
+        // After printing, reload to reset the UI (or re-render results to restore input)
+        // Note: Using reload might be too aggressive, but ensures the input field is restored after the print dialogue.
+        window.location.reload();
+    }
+
+    /**
+     * 显示临时消息框 (替代 alert())
+     * @param {string} message - 消息内容
+     * @param {string} colorClass - 颜色类名 (e.g., bg-red-500)
+     */
+    function showTemporaryMessage(message, colorClass) {
+        let msgBox = document.getElementById('temp-message-box');
+        if (!msgBox) {
+            msgBox = document.createElement('div');
+            msgBox.id = 'temp-message-box';
+            msgBox.className = 'fixed top-4 right-4 z-50 p-4 rounded-lg shadow-xl text-white transition-opacity duration-300 opacity-0';
+            document.body.appendChild(msgBox);
+        }
+        msgBox.textContent = message;
+        msgBox.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-xl text-white transition-opacity duration-300 ${colorClass} opacity-100`;
+
+        setTimeout(() => {
+            msgBox.classList.remove('opacity-100');
+            msgBox.classList.add('opacity-0');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
