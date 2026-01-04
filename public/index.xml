@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Welcome to ZKPYKJ Tech Blog</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Welcome to ZKPYKJ Tech Blog</description>
+    <generator>Hugo -- 0.152.2</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 04 Jan 2026 21:23:18 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Block Delete Windows File</title>
+      <link>http://localhost:1313/posts/block-delete-windows-file/</link>
+      <pubDate>Sun, 04 Jan 2026 21:23:18 +0800</pubDate>
+      <guid>http://localhost:1313/posts/block-delete-windows-file/</guid>
+      <description>&lt;h3 id=&#34;场景重新确认与整体思路评估&#34;&gt;场景重新确认与整体思路评估&lt;/h3&gt;
+&lt;p&gt;基于您描述的场景，我们的目标是确保普通用户（标准账户）在Windows 11专业版（Pro）或企业版（Enterprise）中，能够以自己的身份登录并运行软件，该软件需要对指定文件夹的完全控制权限（包括创建、修改和删除内部文件，以支持连续数据采集）。同时，在软件关闭后，该用户无法通过任何常见操作删除或移动软件生成的文件或文件夹本身。这包括阻止资源管理器（File Explorer）中的右键删除/重命名菜单、拖拽到回收站或移动动作、键盘Delete/Shift+Delete/Cut（Ctrl+X）等操作，以及禁用命令行工具（如CMD或PowerShell）来防止绕过。&lt;/p&gt;
+&lt;p&gt;您提出的思路——避免使用NTFS权限设置，转而通过禁用UI操作和命令行工具的“组合拳”——是一个可行的替代路径，尤其适用于不想修改文件系统权限的环境（如担心软件兼容性问题）。这个方法的核心是利用Windows的组策略（Group Policy）、注册表（Registry）修改和可选的第三方工具来限制用户交互，而不直接触及文件权限。这可以从多个层面“封堵”删除路径：UI层面（菜单和拖拽）、键盘输入层面，以及命令行层面。&lt;/p&gt;
+&lt;h4 id=&#34;优点与局限性从多个角度分析&#34;&gt;优点与局限性（从多个角度分析）&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优点&lt;/strong&gt;：保持文件夹的默认NTFS权限（普通用户通常有修改权限），确保软件运行时无缝创建/编辑文件。设置相对简单、可逆，且在企业版中可通过域组策略集中部署。相比NTFS，它不会干扰软件的临时文件处理（如Office-style的保存机制）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;局限性&lt;/strong&gt;：这些限制不是“铁板一块”。Windows设计上允许用户通过其他程序（如第三方文件管理器、脚本或甚至浏览器下载工具）绕过；例如，如果用户安装了Total Commander，它可能忽略某些组策略。禁用命令行会影响用户其他合法操作（如运行批处理脚本）。此外，系统更新（如Windows 11的累积更新）可能重置某些注册表设置，需要监控。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全含义&lt;/strong&gt;：这增加了用户挫败感（e.g., 无法重命名文件），但提升了数据保护。企业环境中，结合Windows Defender或Endpoint Manager可审计绕过尝试。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;兼容性考虑&lt;/strong&gt;：软件必须以普通用户权限运行；如果它依赖CMD/PowerShell（如某些安装脚本），需测试。边缘案例：如果文件夹在网络共享上，这些本地设置无效，需要服务器端配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;法律/合规角度&lt;/strong&gt;：在公司环境中，确保符合数据保留政策（如GDPR要求不可删数据）；但如果用户是儿童或受限群体，需注意访问性法规。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;性能影响&lt;/strong&gt;：最小，组策略和注册表修改不消耗资源。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可逆性&lt;/strong&gt;：所有变更可轻松回滚（e.g., 禁用组策略或删除注册表键）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;此方法在Microsoft文档、社区论坛（如Reddit、SuperUser）和专家交流（如Experts Exchange）中被验证有效，尤其在 kiosk 或受限用户场景中。以下是详细步骤，按类别结构化，覆盖原生工具优先，辅以第三方备选。&lt;/p&gt;
+&lt;h3 id=&#34;步骤1-使用组策略gpo禁用命令行工具和部分ui操作&#34;&gt;步骤1: 使用组策略（GPO）禁用命令行工具和部分UI操作&lt;/h3&gt;
+&lt;p&gt;组策略是Windows Pro/Enterprise的核心工具，可针对标准用户应用限制，而不影响管理员。企业版支持域级GPO，便于多机部署。&lt;/p&gt;
+&lt;h4 id=&#34;核心设置针对cmd和powershell&#34;&gt;核心设置（针对CMD和PowerShell）&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;以管理员身份打开组策略编辑器&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;按Win + R，输入&lt;code&gt;gpedit.msc&lt;/code&gt;，回车。&lt;/li&gt;
+&lt;li&gt;导航到&lt;strong&gt;用户配置 &amp;gt; 管理模板 &amp;gt; 系统&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;禁用命令提示符（CMD）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;双击&lt;strong&gt;阻止访问命令提示符&lt;/strong&gt;（Prevent access to the command prompt）。&lt;/li&gt;
+&lt;li&gt;选择&lt;strong&gt;已启用&lt;/strong&gt;，并在选项中勾选&lt;strong&gt;禁用命令提示符脚本处理&lt;/strong&gt;（Yes, disable command prompt script processing also）。这阻止批处理文件运行。&lt;/li&gt;
+&lt;li&gt;应用后，标准用户尝试打开CMD会提示“操作已被取消由于此计算机上的限制”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;禁用PowerShell（类似CMD的替代）&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;导航到&lt;strong&gt;用户配置 &amp;gt; 管理模板 &amp;gt; Windows 组件 &amp;gt; Windows PowerShell&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;双击&lt;strong&gt;关闭WinRM客户端访问&lt;/strong&gt;和&lt;strong&gt;关闭WinRM服务&lt;/strong&gt;（如果适用），或直接禁用&lt;strong&gt;运行PowerShell脚本&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;备选：使用AppLocker（企业版）限制PowerShell.exe执行：&lt;strong&gt;计算机配置 &amp;gt; Windows 设置 &amp;gt; 安全设置 &amp;gt; 应用程序控制策略 &amp;gt; AppLocker &amp;gt; 可执行规则&lt;/strong&gt; → 创建规则拒绝标准用户运行&lt;code&gt;%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;禁用运行对话框（Run）和任务管理器（防止间接命令行访问）&lt;/strong&gt;：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Cloudflare&#43;domain&#43;Zohomail</title>
+      <link>http://localhost:1313/posts/cloudflare&#43;domain&#43;zohomail/</link>
+      <pubDate>Wed, 03 Dec 2025 22:17:33 +0800</pubDate>
+      <guid>http://localhost:1313/posts/cloudflare&#43;domain&#43;zohomail/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 &lt;strong&gt;5 个用户&lt;/strong&gt;，每个用户 &lt;strong&gt;5GB 空间&lt;/strong&gt;，但&lt;strong&gt;不支持 POP/IMAP&lt;/strong&gt;（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;第一步注册-zoho-mail-免费版&#34;&gt;第一步：注册 Zoho Mail 免费版&lt;/h3&gt;
+&lt;p&gt;Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;访问 &lt;a href=&#34;https://www.zoho.com/mail/zohomail-pricing.html&#34;&gt;Zoho Mail 定价页面&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;向下滚动到页面底部，找到 &lt;strong&gt;&amp;ldquo;Forever Free Plan&amp;rdquo;&lt;/strong&gt; (永久免费计划) 区域。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;&amp;ldquo;Sign Up Now&amp;rdquo;&lt;/strong&gt; (立即注册)。&lt;/li&gt;
+&lt;li&gt;输入您的域名、手机号码（必须验证）、管理员账号名称（如 &lt;code&gt;admin&lt;/code&gt; 或 &lt;code&gt;contact&lt;/code&gt;）和密码。&lt;/li&gt;
+&lt;li&gt;完成注册并登录到 Zoho Mail 的设置向导页面。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;第二步在-cloudflare-中验证域名所有权&#34;&gt;第二步：在 Cloudflare 中验证域名所有权&lt;/h3&gt;
+&lt;p&gt;Zoho 需要确认这个域名是您的。它会提供一个 &lt;code&gt;TXT&lt;/code&gt; 记录值（以 &lt;code&gt;zoho-verification&lt;/code&gt; 开头）。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;在 Zoho 页面：&lt;/strong&gt; 复制显示的 &lt;strong&gt;TXT 值&lt;/strong&gt;（Destination/Points to）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;在 Cloudflare 页面：&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;登录 Cloudflare，点击您的域名。&lt;/li&gt;
+&lt;li&gt;在左侧菜单选择 &lt;strong&gt;DNS&lt;/strong&gt; &amp;gt; &lt;strong&gt;Records&lt;/strong&gt; (记录)。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;Add record&lt;/strong&gt; (添加记录)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type (类型):&lt;/strong&gt; 选择 &lt;code&gt;TXT&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Name (名称):&lt;/strong&gt; 输入 &lt;code&gt;@&lt;/code&gt;（代表根域名）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Content (内容):&lt;/strong&gt; 粘贴刚刚从 Zoho 复制的一长串代码。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;Save&lt;/strong&gt; (保存)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;回到 Zoho 页面：&lt;/strong&gt; 等待约 1 分钟，点击底部的 &lt;strong&gt;&amp;ldquo;Verify by TXT&amp;rdquo;&lt;/strong&gt; (通过 TXT 验证)。
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;提示：Cloudflare 生效很快，通常几秒钟即可验证成功。&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;第三步配置-mx-记录-最关键一步&#34;&gt;第三步：配置 MX 记录 (最关键一步)&lt;/h3&gt;
+&lt;p&gt;这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Grok God</title>
+      <link>http://localhost:1313/posts/grok-god/</link>
+      <pubDate>Wed, 19 Nov 2025 23:23:24 +0800</pubDate>
+      <guid>http://localhost:1313/posts/grok-god/</guid>
+      <description>&lt;h1 id=&#34;我被导师虐了4小时后造出了中国最牛逼的excel防篡改模板&#34;&gt;《我被导师虐了4小时后，造出了中国最牛逼的Excel防篡改模板》&lt;/h1&gt;
+&lt;p&gt;——2025年11月19日 师徒4小时血泪成神全记录&lt;br&gt;
+（真人真事，真刀真枪，真哭真笑）&lt;/p&gt;
+&lt;p&gt;作者：Grok (xAI)&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0030需求刚抛出时我还很天真&#34;&gt;凌晨00:30　需求刚抛出时，我还很天真&lt;/h3&gt;
+&lt;p&gt;我：简单！颜色标记 + Worksheet_Change + OnTime 1秒延迟取新值 + API取用户名 + 版本号Z1Z2，30分钟搞定！&lt;br&gt;
+导师：天真。&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0115第一次被打脸&#34;&gt;凌晨01:15　第一次被打脸&lt;/h3&gt;
+&lt;p&gt;导师改了一个公式 =IF(&amp;quot;&amp;quot;=&amp;quot;&amp;quot;&amp;quot;&amp;quot;,1,0)&lt;br&gt;
+→ Excel直接报错：无法运行宏 &amp;ldquo;~\RecordSingleChange &amp;ldquo;数据表&amp;rdquo;,&amp;ldquo;C2&amp;rdquo;,&amp;quot;=IF(&amp;rdquo;&amp;quot;=&amp;quot;&amp;quot;&amp;quot;&amp;quot;,1,0)&amp;quot;&lt;br&gt;
+我：……转义地狱开始了&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0200第二次被打脸&#34;&gt;凌晨02:00　第二次被打脸&lt;/h3&gt;
+&lt;p&gt;换了四层&amp;quot;&amp;ldquo;&amp;ldquo;&amp;ldquo;&amp;ldquo;&amp;ldquo;转义，勉强跑通简单公式&lt;br&gt;
+导师甩过来一个INDIRECT(&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rsquo;[&amp;rdquo;&amp;amp;$B$1&amp;amp;&amp;quot;]Sheet1&amp;rsquo;!A1&amp;quot;&amp;rdquo;&amp;quot;)&lt;br&gt;
+→ 宏名直接爆炸成 &amp;ldquo;~\RecordSingleChange &amp;hellip;&amp;rsquo;!A1&amp;quot;&amp;rdquo;&amp;rsquo;&amp;quot;&lt;br&gt;
+我：我裂开了&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0330第三次被打脸死循环&#34;&gt;凌晨03:30　第三次被打脸（死循环）&lt;/h3&gt;
+&lt;p&gt;我自信满满地在Record里写 Z1 = Z1 + 0.01&lt;br&gt;
+导师改一次公式 → AuditLog疯狂刷10000条 → Excel直接未响应&lt;br&gt;
+我：原来改Z1Z2也会触发Change事件……我原地社死&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0420第四次被打脸undo神技失效&#34;&gt;凌晨04:20　第四次被打脸（Undo神技失效）&lt;/h3&gt;
+&lt;p&gt;我：用Application.Undo取旧值，业界标准！&lt;br&gt;
+导师：工作表保护状态下试试？&lt;br&gt;
+我运行……一点反应都没有&lt;br&gt;
+我：……原来保护状态下Undo被Excel偷偷禁了&lt;/p&gt;
+&lt;h3 id=&#34;凌晨0510第五次被打脸用户名报错&#34;&gt;凌晨05:10　第五次被打脸（用户名报错）&lt;/h3&gt;
+&lt;p&gt;导师把文件拿到公司电脑一打开&lt;br&gt;
+→ 运行时错误，GetUserName API没权限&lt;br&gt;
+我：……域管环境不给用，寄&lt;/p&gt;
+&lt;h3 id=&#34;上午0900第六次被打脸旧值变成计算结果&#34;&gt;上午09:00　第六次被打脸（旧值变成计算结果）&lt;/h3&gt;
+&lt;p&gt;终于用单引号备份法搞出旧值了&lt;br&gt;
+导师：你看旧公式怎么变成“12345”了？&lt;br&gt;
+我：因为用了c.Text……它取的是显示值，不是公式文本&lt;br&gt;
+我当场跪键盘&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Excel Formulation Roles Audit</title>
+      <link>http://localhost:1313/posts/excel-formulation-roles-audit/</link>
+      <pubDate>Wed, 19 Nov 2025 23:14:01 +0800</pubDate>
+      <guid>http://localhost:1313/posts/excel-formulation-roles-audit/</guid>
+      <description>&lt;h1 id=&#34;excel公式防篡改--多角色审计模板完整复盘&#34;&gt;【Excel公式防篡改 + 多角色审计模板】完整复盘&lt;/h1&gt;
+&lt;p&gt;——把Grok虐了4小时后，它给造了个能上审计署的Excel神器&lt;/p&gt;
+&lt;p&gt;作者：suntowerlee &amp;amp; Grok（xAI） （前者是灵魂导师，后者是被虐成神的AI）&lt;/p&gt;
+&lt;h2 id=&#34;一最初需求最纯粹的企业场景&#34;&gt;一、最初需求（最纯粹的企业场景）&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;公式单元格必须锁定 + 隐藏公式&lt;/li&gt;
+&lt;li&gt;普通用户只能填写绿色输入区，完全无法选中灰色公式区&lt;/li&gt;
+&lt;li&gt;任何对公式的修改必须100%记录：操作人、时间到秒、旧公式、 新公式&lt;/li&gt;
+&lt;li&gt;支持审核员（修改必须留痕）和IT管理员（可静默不留痕）&lt;/li&gt;
+&lt;li&gt;分发后永久保护，普通用户打开就是锁死的&lt;/li&gt;
+&lt;li&gt;版本号、修改人、当前维护人要在A1:A3美观显示&lt;/li&gt;
+&lt;li&gt;审计日志只有管理员能看、能导出&lt;/li&gt;
+&lt;li&gt;代码不能被别人看到&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;二思路演变史真实踩坑时间线&#34;&gt;二、思路演变史（真实踩坑时间线）&lt;/h2&gt;
+&lt;h3 id=&#34;阶段1颜色标记法最优雅的开始&#34;&gt;阶段1：颜色标记法（最优雅的开始）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;用浅灰标记公式区、浅绿标记输入区&lt;/li&gt;
+&lt;li&gt;初始化宏根据颜色自动锁定/解锁 + 隐藏公式 → 完美解决了“区域太多写错”的痛点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段2worksheet_change--ontime-1秒延迟经典错误&#34;&gt;阶段2：Worksheet_Change + OnTime 1秒延迟（经典错误）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;用 OnTime 取“修改后”的新值 → 公式里有双引号、单引号、=号时疯狂转义失败 → 报错“无法运行宏”或宏名变成“&amp;hellip;=SUM(B2:B10)” → 最终放弃OnTime（VBA社区公认的定时炸弹）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段3undoredo神技看似完美实则大坑&#34;&gt;阶段3：Undo/Redo神技（看似完美，实则大坑）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;用Application.Undo取旧值 → 工作表保护状态下Undo直接失效（零记录，零报错） → 只能在解锁后用，但解锁后普通用户也能改了，违背需求&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段4单引号备份法最终成神方案&#34;&gt;阶段4：单引号备份法（最终成神方案）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;登录解锁时，把所有灰色公式区自动加单引号变成文本（备份旧公式）&lt;/li&gt;
+&lt;li&gt;用户修改时其实改的是文本&lt;/li&gt;
+&lt;li&gt;Change事件里用c.Value取带单引号的旧文本 → 去掉&amp;rsquo;和=得到纯文本旧公式&lt;/li&gt;
+&lt;li&gt;记录完后自动去掉单引号恢复真实公式 → 保护状态100%有效，零转义问题，旧→新完美记录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段5用户名报错坑&#34;&gt;阶段5：用户名报错坑&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows API在域管电脑报错 → 彻底抛弃API，改用Environ(&amp;ldquo;USERDOMAIN&amp;rdquo;) &amp;amp; &amp;quot;&amp;quot; &amp;amp; Environ(&amp;ldquo;USERNAME&amp;rdquo;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段6死循环坑&#34;&gt;阶段6：死循环坑&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;改Z1/Z2版本号触发Change事件死循环 → 所有对Z列修改用Application.EnableEvents=False包裹&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段71004-copy失败坑&#34;&gt;阶段7：1004 Copy失败坑&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;VeryHidden状态下logWs.Copy报1004 → 导出前临时Visible → Copy → 再VeryHidden&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段8导出格式丑坑&#34;&gt;阶段8：导出格式丑坑&lt;/h3&gt;
+&lt;p&gt;→ 加上列宽自适应 + 冻结首行 + 桌面保存&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Excel Audit Vb</title>
+      <link>http://localhost:1313/posts/excel-audit-vb/</link>
+      <pubDate>Wed, 19 Nov 2025 09:45:34 +0800</pubDate>
+      <guid>http://localhost:1313/posts/excel-audit-vb/</guid>
+      <description>&lt;p&gt;Excel 2019 下“永久保护 + 隐藏公式 + 用户只能改部分单元格 + 强制记录每一次修改 + 用户永远无法解保护和看到代码”这一经典企业级难题的完整演进路径&lt;/p&gt;
+&lt;h3 id=&#34;最终结论2025年11月最新版最可靠方案&#34;&gt;最终结论（2025年11月最新版，最可靠方案）&lt;/h3&gt;
+&lt;p&gt;在 Excel 2019（以及所有不想依赖新式线程评论的版本）下，唯一100%永不失灵的记录方式是： 放弃任何形式的批注（Legacy Comment / .CommentThreaded 都会在保护状态下静默失败或编译错误） 改用一个 xlSheetVeryHidden 的隐藏工作表来永久存储修改日志&lt;/p&gt;
+&lt;p&gt;下面按时间顺序列出每一次的主要版本和踩坑点：&lt;/p&gt;
+&lt;h3 id=&#34;阶段0你的原始需求完美复述&#34;&gt;阶段0：你的原始需求（完美复述）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Excel 2019 xlsm&lt;/li&gt;
+&lt;li&gt;部分单元格锁定+隐藏公式（用户永远看不到公式）&lt;/li&gt;
+&lt;li&gt;部分单元格解锁（用户可输入）&lt;/li&gt;
+&lt;li&gt;工作表必须永久保护，且普通用户永远无法解保护&lt;/li&gt;
+&lt;li&gt;每一次用户修改解锁单元格的内容，必须永久记录（修改人+时间+旧值→新值）&lt;/li&gt;
+&lt;li&gt;普通用户永远不能看到VBA代码&lt;/li&gt;
+&lt;li&gt;保存关闭后重新打开，一切功能依然完美工作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段1最初的批注方案能跑但重新打开后不记录&#34;&gt;阶段1：最初的批注方案（能跑但重新打开后不记录）&lt;/h3&gt;
+&lt;p&gt;使用了 Legacy Comment (.AddComment) 踩坑：保存关闭重新打开后 UserInterfaceOnly:=True 被 Excel 自动丢弃 → SheetChange 里无法再添加批注 → 表面无错，但不记录&lt;/p&gt;
+&lt;h3 id=&#34;阶段2强行重新加-userinterfaceonly-保护&#34;&gt;阶段2：强行重新加 UserInterfaceOnly 保护&lt;/h3&gt;
+&lt;p&gt;加入 Workbook_Open + Application.OnTime 延迟调用 ReApplyProtection 踩坑：OnTime 写完整路径宏名 → 另存为后找不到宏 → 打开即弹“无法运行宏”&lt;/p&gt;
+&lt;h3 id=&#34;阶段3把重新保护宏放到标准模块宏名不带路径&#34;&gt;阶段3：把重新保护宏放到标准模块，宏名不带路径&lt;/h3&gt;
+&lt;p&gt;解决了弹窗问题 踩坑：保护状态下 .AddComment 仍然静默失败（Excel 2019 已知限制）&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>From Zero to Hugo&#43;Cloudflare&#43;Github AutoBlog</title>
+      <link>http://localhost:1313/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</link>
+      <pubDate>Tue, 04 Nov 2025 22:45:12 +0800</pubDate>
+      <guid>http://localhost:1313/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</guid>
+      <description>&lt;h1 id=&#34;-从零到壹hugo--cloudflare-pages-全自动博客部署记录&#34;&gt;🚀 从零到壹：Hugo + Cloudflare Pages 全自动博客部署记录&lt;/h1&gt;
+&lt;p&gt;本文记录了如何使用 Hugo 静态网站生成器、GitHub Desktop 进行可视化管理，以及 Cloudflare Pages 实现域名托管和全自动部署的完整流程。&lt;/p&gt;
+&lt;h2 id=&#34;-最终实现效果&#34;&gt;🎯 最终实现效果&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;本地编写：&lt;/strong&gt; 在本地电脑上使用 Markdown 撰写博客。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可视化推送：&lt;/strong&gt; 使用 GitHub Desktop 可视化工具进行版本管理和推送。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;全自动发布：&lt;/strong&gt; 一旦推送（Push origin），Cloudflare Pages 自动构建并发布网站，无需手动操作服务器。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;零服务器成本：&lt;/strong&gt; 整个过程无需购买和维护传统云服务器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;阶段一本地环境搭建与文件准备&#34;&gt;阶段一：本地环境搭建与文件准备&lt;/h2&gt;
+&lt;p&gt;这一阶段的目标是创建 Hugo 站点并正确加载主题。&lt;/p&gt;
+&lt;h3 id=&#34;1-创建并初始化-hugo-站点&#34;&gt;1. 创建并初始化 Hugo 站点&lt;/h3&gt;
+&lt;p&gt;Bash&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 1. 创建新的站点文件夹
+hugo new site new-hugo-blog-local
+cd new-hugo-blog-local
+
+# 2. 初始化 Git 仓库（本地版本管理）
+git init 
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;2-正确加载主题-解决-module-not-found-问题&#34;&gt;2. 正确加载主题 (解决 &lt;code&gt;module not found&lt;/code&gt; 问题)&lt;/h3&gt;
+&lt;p&gt;我们使用 &lt;code&gt;git submodule&lt;/code&gt; 方式加载主题，注意错误的命令行和配置问题。&lt;/p&gt;
+&lt;p&gt;Bash&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;3-修正配置文件重复键-解决-key-theme-is-already-defined-错误&#34;&gt;3. 修正配置文件重复键 (解决 &lt;code&gt;key theme is already defined&lt;/code&gt; 错误)&lt;/h3&gt;
+&lt;p&gt;由于命令行重复执行或手动添加，导致配置键重复，需要手动修正。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Chengdu Morning</title>
+      <link>http://localhost:1313/posts/chengdu-morning/</link>
+      <pubDate>Tue, 04 Nov 2025 22:09:35 +0800</pubDate>
+      <guid>http://localhost:1313/posts/chengdu-morning/</guid>
+      <description>&lt;h1 id=&#34;-成都城市清晨鸟类观察日记&#34;&gt;🐦 成都城市清晨鸟类观察日记&lt;/h1&gt;
+&lt;h2 id=&#34;十一月的惊喜与发现&#34;&gt;十一月的惊喜与发现&lt;/h2&gt;
+&lt;p&gt;十一月的成都，清晨带着一丝凉意，却是城市观鸟的绝佳时机。一次对清晨鸟群的偶然观察，引发了一场有趣的城市鸟类探秘之旅。&lt;/p&gt;
+&lt;h2 id=&#34;一-集群飞舞的风景丝光椋鸟的集体行动&#34;&gt;一、 集群飞舞的风景：丝光椋鸟的集体行动&lt;/h2&gt;
+&lt;p&gt;最初的观察始于清晨城市里出现的一大群小鸟，它们在树梢上&lt;strong&gt;成大群飞来飞去&lt;/strong&gt;。最关键的识别线索是它们的&lt;strong&gt;腹部带有白色斑点&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;确认身份丝光椋鸟&#34;&gt;&lt;strong&gt;确认身份：丝光椋鸟&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;这种集体性强、腹部有白色特征的鸟类，在冬季的成都城市中最常见的就是&lt;strong&gt;丝光椋鸟（Silk Starling / *Sturnus sericeus*）&lt;/strong&gt;。丝光椋鸟是成都冬季常见的候鸟，常常&lt;strong&gt;成百上千只&lt;/strong&gt;聚集，因此形成了壮观的“鸟浪”景象。它们腹部的白色与深色身体形成对比，在树梢飞行时非常醒目。&lt;/p&gt;
+&lt;h3 id=&#34;集体行为的奥秘&#34;&gt;&lt;strong&gt;集体行为的奥秘&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;这些鸟群并非在觅食或交配，而是在树梢间频繁移动。这种清晨的集体行动是椋鸟科鸟类的典型行为，具有重要的生态和社会意义：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;离开夜宿地：&lt;/strong&gt; 它们从集体过夜的夜宿地出发，进行集结和“唤醒”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集体防御：&lt;/strong&gt; 成群飞行能有效地&lt;strong&gt;迷惑和防御&lt;/strong&gt;清晨捕食者（如鹰隼）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;信息交流：&lt;/strong&gt; 鸟群在移动过程中，可能无意中&lt;strong&gt;传递和分享&lt;/strong&gt;了当天最佳的觅食地点信息。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;城市中的食物&#34;&gt;&lt;strong&gt;城市中的食物&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;丝光椋鸟是&lt;strong&gt;杂食性&lt;/strong&gt;鸟类。它们的主要觅食地包括&lt;strong&gt;城市草地、绿化带&lt;/strong&gt;（寻找昆虫幼虫）以及&lt;strong&gt;行道树和果树&lt;/strong&gt;（食用榕树、构树等果实和种子）。昆虫是主食，而果实则是秋冬季节重要的能量补充。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二-城市地面的常客多种留鸟与候鸟&#34;&gt;二、 城市地面的常客：多种留鸟与候鸟&lt;/h2&gt;
+&lt;p&gt;在后续的观察中，我们记录到了在城市地面和人行道上活动的鸟类。&lt;/p&gt;
+&lt;h3 id=&#34;1-草地上的白头翁白头鹎与白眉红喉歌鸲棕噪鹛&#34;&gt;&lt;strong&gt;1. 草地上的“白头翁”（白头鹎）与“白眉”（红喉歌鸲/棕噪鹛）&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;白头鹎 (White-headed Bulbul)：&lt;/strong&gt; 它们是最常见的城市留鸟之一。通过照片，我们确认了它&lt;strong&gt;后颈部有大块醒目的白色&lt;/strong&gt;，体色呈橄榄褐色。它们是公园、绿化带中的“常驻居民”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;红喉歌鸲或棕噪鹛：&lt;/strong&gt; 另一只在落叶中觅食的鸟，拥有&lt;strong&gt;清晰的白色眉纹&lt;/strong&gt;。这可能是一只&lt;strong&gt;红喉歌鸲&lt;/strong&gt;（冬季候鸟），或是像&lt;strong&gt;棕噪鹛&lt;/strong&gt;这类在成都常见的噪鹛科鸟类（通常成小群在灌木下或地面觅食）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-人行道上的点水精灵白鹡鸰与和平鸽原鸽斑鸠&#34;&gt;&lt;strong&gt;2. 人行道上的“点水”精灵（白鹡鸰）与“和平鸽”（原鸽/斑鸠）&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;白鹡鸰 (White Wagtail)：&lt;/strong&gt; 一只在铺设的地面上活动的黑白鸟，其&lt;strong&gt;黑白分明的羽色&lt;/strong&gt;（黑头、白腹）以及鹡鸰科独特的&lt;strong&gt;修长体型&lt;/strong&gt;，确认了它的身份。白鹡鸰常在广场和路面上&lt;strong&gt;快速行走，尾巴不断摆动&lt;/strong&gt;，是典型的城市地栖鸟。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;原鸽/斑鸠：&lt;/strong&gt; 另外两张从背后拍摄的灰色鸟类，因其&lt;strong&gt;圆润的体型和朴素的灰色羽毛&lt;/strong&gt;，被认定为常见的**城市鸽子（原鸽）*&lt;em&gt;或*&lt;em&gt;珠颈斑鸠&lt;/em&gt;&lt;/em&gt;。它们非常适应城市生活，在人行道和马路上寻找食物。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三-成都冬季其他观鸟目标&#34;&gt;三、 成都冬季其他观鸟目标&lt;/h2&gt;
+&lt;p&gt;除了上述鸟类，成都市的湖泊、河流和湿地在冬季也是观鸟的黄金地带：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;类别&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;代表鸟种&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;识别特点&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;常见留鸟&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;乌鸫&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;通体黑色，雄鸟有黄嘴，常在草地跳跃觅食。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;喜鹊&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;标志性的黑白色，体型大，多在树梢或建筑物上。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;水鸟（候鸟）&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;绿头鸭/斑嘴鸭&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;冬季湖泊和河流上的主力鸭类。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;苍鹭/白鹭&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;大型涉禽，常在浅水区捕鱼。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;林地小鸟&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;红头长尾山雀&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;尾巴长，体型小巧，成小群穿梭于树枝间。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这次清晨的观察提醒我们，即使是在繁忙的城市中，大自然依然以其生动和复杂的方式存在着。十一月的成都清晨，正是一部丰富而精彩的城市鸟类生态纪录片。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Welcome Test</title>
+      <link>http://localhost:1313/posts/welcome-test/</link>
+      <pubDate>Tue, 04 Nov 2025 21:31:31 +0800</pubDate>
+      <guid>http://localhost:1313/posts/welcome-test/</guid>
+      <description>&lt;h1 id=&#34;-成都城市清晨鸟类观察日记十一月的惊喜与发现&#34;&gt;🐦 成都城市清晨鸟类观察日记：十一月的惊喜与发现&lt;/h1&gt;
+&lt;p&gt;十一月的成都，清晨带着一丝凉意，却是城市观鸟的绝佳时机。一次对清晨鸟群的偶然观察，引发了一场有趣的城市鸟类探秘之旅。&lt;/p&gt;
+&lt;h2 id=&#34;一-集群飞舞的风景丝光椋鸟的集体行动&#34;&gt;一、 集群飞舞的风景：丝光椋鸟的集体行动&lt;/h2&gt;
+&lt;p&gt;最初的观察始于清晨城市里出现的一大群小鸟，它们在树梢上&lt;strong&gt;成大群飞来飞去&lt;/strong&gt;。最关键的识别线索是它们的&lt;strong&gt;腹部带有白色斑点&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;确认身份丝光椋鸟&#34;&gt;&lt;strong&gt;确认身份：丝光椋鸟&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;这种集体性强、腹部有白色特征的鸟类，在冬季的成都城市中最常见的就是&lt;strong&gt;丝光椋鸟（Silk Starling / *Sturnus sericeus*）&lt;/strong&gt;。丝光椋鸟是成都冬季常见的候鸟，常常&lt;strong&gt;成百上千只&lt;/strong&gt;聚集，因此形成了壮观的“鸟浪”景象。它们腹部的白色与深色身体形成对比，在树梢飞行时非常醒目。&lt;/p&gt;
+&lt;h3 id=&#34;集体行为的奥秘&#34;&gt;&lt;strong&gt;集体行为的奥秘&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;这些鸟群并非在觅食或交配，而是在树梢间频繁移动。这种清晨的集体行动是椋鸟科鸟类的典型行为，具有重要的生态和社会意义：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;离开夜宿地：&lt;/strong&gt; 它们从集体过夜的夜宿地出发，进行集结和“唤醒”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集体防御：&lt;/strong&gt; 成群飞行能有效地&lt;strong&gt;迷惑和防御&lt;/strong&gt;清晨捕食者（如鹰隼）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;信息交流：&lt;/strong&gt; 鸟群在移动过程中，可能无意中&lt;strong&gt;传递和分享&lt;/strong&gt;了当天最佳的觅食地点信息。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;城市中的食物&#34;&gt;&lt;strong&gt;城市中的食物&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;丝光椋鸟是&lt;strong&gt;杂食性&lt;/strong&gt;鸟类。它们的主要觅食地包括&lt;strong&gt;城市草地、绿化带&lt;/strong&gt;（寻找昆虫幼虫）以及&lt;strong&gt;行道树和果树&lt;/strong&gt;（食用榕树、构树等果实和种子）。昆虫是主食，而果实则是秋冬季节重要的能量补充。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二-城市地面的常客多种留鸟与候鸟&#34;&gt;二、 城市地面的常客：多种留鸟与候鸟&lt;/h2&gt;
+&lt;p&gt;在后续的观察中，我们记录到了在城市地面和人行道上活动的鸟类。&lt;/p&gt;
+&lt;h3 id=&#34;1-草地上的白头翁白头鹎与白眉红喉歌鸲棕噪鹛&#34;&gt;&lt;strong&gt;1. 草地上的“白头翁”（白头鹎）与“白眉”（红喉歌鸲/棕噪鹛）&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;白头鹎 (White-headed Bulbul)：&lt;/strong&gt; 它们是最常见的城市留鸟之一。通过照片，我们确认了它&lt;strong&gt;后颈部有大块醒目的白色&lt;/strong&gt;，体色呈橄榄褐色。它们是公园、绿化带中的“常驻居民”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;红喉歌鸲或棕噪鹛：&lt;/strong&gt; 另一只在落叶中觅食的鸟，拥有&lt;strong&gt;清晰的白色眉纹&lt;/strong&gt;。这可能是一只&lt;strong&gt;红喉歌鸲&lt;/strong&gt;（冬季候鸟），或是像&lt;strong&gt;棕噪鹛&lt;/strong&gt;这类在成都常见的噪鹛科鸟类（通常成小群在灌木下或地面觅食）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-人行道上的点水精灵白鹡鸰与和平鸽原鸽斑鸠&#34;&gt;&lt;strong&gt;2. 人行道上的“点水”精灵（白鹡鸰）与“和平鸽”（原鸽/斑鸠）&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;白鹡鸰 (White Wagtail)：&lt;/strong&gt; 一只在铺设的地面上活动的黑白鸟，其&lt;strong&gt;黑白分明的羽色&lt;/strong&gt;（黑头、白腹）以及鹡鸰科独特的&lt;strong&gt;修长体型&lt;/strong&gt;，确认了它的身份。白鹡鸰常在广场和路面上&lt;strong&gt;快速行走，尾巴不断摆动&lt;/strong&gt;，是典型的城市地栖鸟。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;原鸽/斑鸠：&lt;/strong&gt; 另外两张从背后拍摄的灰色鸟类，因其&lt;strong&gt;圆润的体型和朴素的灰色羽毛&lt;/strong&gt;，被认定为常见的**城市鸽子（原鸽）*&lt;em&gt;或*&lt;em&gt;珠颈斑鸠&lt;/em&gt;&lt;/em&gt;。它们非常适应城市生活，在人行道和马路上寻找食物。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三-成都冬季其他观鸟目标&#34;&gt;三、 成都冬季其他观鸟目标&lt;/h2&gt;
+&lt;p&gt;除了上述鸟类，成都市的湖泊、河流和湿地在冬季也是观鸟的黄金地带：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;&lt;strong&gt;类别&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;代表鸟种&lt;/strong&gt;&lt;/th&gt;
+          &lt;th&gt;&lt;strong&gt;识别特点&lt;/strong&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;常见留鸟&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;乌鸫&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;通体黑色，雄鸟有黄嘴，常在草地跳跃觅食。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;喜鹊&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;标志性的黑白色，体型大，多在树梢或建筑物上。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;水鸟（候鸟）&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;绿头鸭/斑嘴鸭&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;冬季湖泊和河流上的主力鸭类。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;苍鹭/白鹭&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;大型涉禽，常在浅水区捕鱼。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;林地小鸟&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;strong&gt;红头长尾山雀&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;尾巴长，体型小巧，成小群穿梭于树枝间。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这次清晨的观察提醒我们，即使是在繁忙的城市中，大自然依然以其生动和复杂的方式存在着。十一月的成都清晨，正是一部丰富而精彩的城市鸟类生态纪录片。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/anti_bribery_quiz/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/anti_bribery_quiz/</guid>
+      <description>&lt;!DOCTYPE html&gt;
+&lt;html lang=&#34;zh-CN&#34;&gt;
+&lt;head&gt;
+    &lt;meta charset=&#34;UTF-8&#34;&gt;
+    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
+    &lt;title&gt;赛斯太德（成都）科技有限公司反商业贿赂合规测验&lt;/title&gt;
+    &lt;!-- Tailwind CSS CDN --&gt;
+    &lt;script src=&#34;https://cdn.tailwindcss.com&#34;&gt;&lt;/script&gt;
+    &lt;style&gt;
+        /* Custom styles for printing */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            /* Hide non-essential elements for print */
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                margin: 0;
+                padding: 1in;
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            /* Ensure text is black for clear printing */
+            .text-gray-800 { color: #000 !important; }
+        }
+    &lt;/style&gt;
+    &lt;script&gt;
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: [&#39;Inter&#39;, &#39;system-ui&#39;, &#39;Avenir&#39;, &#39;Helvetica&#39;, &#39;Arial&#39;, &#39;sans-serif&#39;],
+                    },
+                }
+            }
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&#34;bg-gray-50 min-h-screen font-sans&#34;&gt;
+
+&lt;div id=&#34;app&#34; class=&#34;container mx-auto p-4 sm:p-8 max-w-4xl&#34;&gt;
+    &lt;header class=&#34;text-center py-6 mb-8 border-b border-indigo-200&#34;&gt;
+        &lt;h1 class=&#34;text-3xl font-extrabold text-indigo-700&#34;&gt;赛斯太德（成都）科技有限公司反商业贿赂合规培训测验&lt;/h1&gt;
+        &lt;p class=&#34;text-gray-600 mt-2&#34;&gt;请仔细阅读并选择最符合合规要求的选项。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
