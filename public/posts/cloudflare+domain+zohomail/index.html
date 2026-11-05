@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Cloudflare&#43;domain&#43;Zohomail | Welcome to ZKPYKJ Tech Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Cloudflare&#43;domain&#43;Zohomail | Welcome to ZKPYKJ Tech Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
 请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 5 个用户，每个用户 5GB 空间，但不支持 POP/IMAP（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：
 
 第一步：注册 Zoho Mail 免费版
@@ -44,69 +43,35 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 
 第三步：配置 MX 记录 (最关键一步)
 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。">
-<meta name="author" content="">
-<link rel="canonical" href="https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css" integrity="sha256-NDzEgLn/yPBMy&#43;XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://zkpykj.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zkpykj.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zkpykj.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zkpykj.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zkpykj.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+    <meta name="generator" content="Hugo 0.152.2">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
 
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
+    
+<link rel="stylesheet" href="/ananke/css/main.min.efe4d852f731d5d1fbb87718387202a97aafd768cdcdaed0662bbe6982e91824.css" >
 
-            .list {
-                background: var(--theme);
-            }
 
-            .toc {
-                background: var(--entry);
-            }
-        }
 
-        @media (prefers-color-scheme: light) {
-            .list::-webkit-scrollbar-thumb {
-                border-color: var(--code-bg);
-            }
-        }
 
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
-    }
+    
 
-</script><meta property="og:url" content="https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/">
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/">
+    
+
+    <meta property="og:url" content="https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/">
   <meta property="og:site_name" content="Welcome to ZKPYKJ Tech Blog">
   <meta property="og:title" content="Cloudflare&#43;domain&#43;Zohomail">
   <meta property="og:description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
@@ -114,150 +79,91 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 第一步：注册 Zoho Mail 免费版 Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：
 访问 Zoho Mail 定价页面。 向下滚动到页面底部，找到 “Forever Free Plan” (永久免费计划) 区域。 点击 “Sign Up Now” (立即注册)。 输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。 完成注册并登录到 Zoho Mail 的设置向导页面。 第二步：在 Cloudflare 中验证域名所有权 Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。
 在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。 在 Cloudflare 页面： 登录 Cloudflare，点击您的域名。 在左侧菜单选择 DNS &gt; Records (记录)。 点击 Add record (添加记录)。 Type (类型): 选择 TXT。 Name (名称): 输入 @（代表根域名）。 Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。 点击 Save (保存)。 回到 Zoho 页面： 等待约 1 分钟，点击底部的 “Verify by TXT” (通过 TXT 验证)。 提示：Cloudflare 生效很快，通常几秒钟即可验证成功。 第三步：配置 MX 记录 (最关键一步) 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。">
-  <meta property="og:locale" content="en-us">
+  <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2025-12-03T22:17:33+08:00">
     <meta property="article:modified_time" content="2025-12-03T22:17:33+08:00">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cloudflare&#43;domain&#43;Zohomail">
-<meta name="twitter:description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
+
+  <meta itemprop="name" content="Cloudflare&#43;domain&#43;Zohomail">
+  <meta itemprop="description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
 请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 5 个用户，每个用户 5GB 空间，但不支持 POP/IMAP（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：
+第一步：注册 Zoho Mail 免费版 Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：
+访问 Zoho Mail 定价页面。 向下滚动到页面底部，找到 “Forever Free Plan” (永久免费计划) 区域。 点击 “Sign Up Now” (立即注册)。 输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。 完成注册并登录到 Zoho Mail 的设置向导页面。 第二步：在 Cloudflare 中验证域名所有权 Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。
+在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。 在 Cloudflare 页面： 登录 Cloudflare，点击您的域名。 在左侧菜单选择 DNS &gt; Records (记录)。 点击 Add record (添加记录)。 Type (类型): 选择 TXT。 Name (名称): 输入 @（代表根域名）。 Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。 点击 Save (保存)。 回到 Zoho 页面： 等待约 1 分钟，点击底部的 “Verify by TXT” (通过 TXT 验证)。 提示：Cloudflare 生效很快，通常几秒钟即可验证成功。 第三步：配置 MX 记录 (最关键一步) 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。">
+  <meta itemprop="datePublished" content="2025-12-03T22:17:33+08:00">
+  <meta itemprop="dateModified" content="2025-12-03T22:17:33+08:00">
+  <meta itemprop="wordCount" content="270">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Cloudflare&#43;domain&#43;Zohomail">
+  <meta name="twitter:description" content="Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。
+请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 5 个用户，每个用户 5GB 空间，但不支持 POP/IMAP（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：
+第一步：注册 Zoho Mail 免费版 Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：
+访问 Zoho Mail 定价页面。 向下滚动到页面底部，找到 “Forever Free Plan” (永久免费计划) 区域。 点击 “Sign Up Now” (立即注册)。 输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。 完成注册并登录到 Zoho Mail 的设置向导页面。 第二步：在 Cloudflare 中验证域名所有权 Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。
+在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。 在 Cloudflare 页面： 登录 Cloudflare，点击您的域名。 在左侧菜单选择 DNS &gt; Records (记录)。 点击 Add record (添加记录)。 Type (类型): 选择 TXT。 Name (名称): 输入 @（代表根域名）。 Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。 点击 Save (保存)。 回到 Zoho 页面： 等待约 1 分钟，点击底部的 “Verify by TXT” (通过 TXT 验证)。 提示：Cloudflare 生效很快，通常几秒钟即可验证成功。 第三步：配置 MX 记录 (最关键一步) 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。">
 
-第一步：注册 Zoho Mail 免费版
-Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：
-
-访问 Zoho Mail 定价页面。
-向下滚动到页面底部，找到 &ldquo;Forever Free Plan&rdquo; (永久免费计划) 区域。
-点击 &ldquo;Sign Up Now&rdquo; (立即注册)。
-输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。
-完成注册并登录到 Zoho Mail 的设置向导页面。
-
-
-第二步：在 Cloudflare 中验证域名所有权
-Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。
-
-在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。
-在 Cloudflare 页面：
-
-登录 Cloudflare，点击您的域名。
-在左侧菜单选择 DNS &gt; Records (记录)。
-点击 Add record (添加记录)。
-Type (类型): 选择 TXT。
-Name (名称): 输入 @（代表根域名）。
-Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
-点击 Save (保存)。
-
-
-回到 Zoho 页面： 等待约 1 分钟，点击底部的 &ldquo;Verify by TXT&rdquo; (通过 TXT 验证)。
-
-提示：Cloudflare 生效很快，通常几秒钟即可验证成功。
-
-
-
-
-第三步：配置 MX 记录 (最关键一步)
-这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://zkpykj.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Cloudflare+domain+Zohomail",
-      "item": "https://zkpykj.com/posts/cloudflare+domain+zohomail/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Cloudflare+domain+Zohomail",
-  "name": "Cloudflare\u002bdomain\u002bZohomail",
-  "description": "Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。\n请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 5 个用户，每个用户 5GB 空间，但不支持 POP/IMAP（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：\n第一步：注册 Zoho Mail 免费版 Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：\n访问 Zoho Mail 定价页面。 向下滚动到页面底部，找到 \u0026ldquo;Forever Free Plan\u0026rdquo; (永久免费计划) 区域。 点击 \u0026ldquo;Sign Up Now\u0026rdquo; (立即注册)。 输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。 完成注册并登录到 Zoho Mail 的设置向导页面。 第二步：在 Cloudflare 中验证域名所有权 Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。\n在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。 在 Cloudflare 页面： 登录 Cloudflare，点击您的域名。 在左侧菜单选择 DNS \u0026gt; Records (记录)。 点击 Add record (添加记录)。 Type (类型): 选择 TXT。 Name (名称): 输入 @（代表根域名）。 Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。 点击 Save (保存)。 回到 Zoho 页面： 等待约 1 分钟，点击底部的 \u0026ldquo;Verify by TXT\u0026rdquo; (通过 TXT 验证)。 提示：Cloudflare 生效很快，通常几秒钟即可验证成功。 第三步：配置 MX 记录 (最关键一步) 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。\n",
-  "keywords": [
+      
     
-  ],
-  "articleBody": "Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。\n请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 5 个用户，每个用户 5GB 空间，但不支持 POP/IMAP（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：\n第一步：注册 Zoho Mail 免费版 Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：\n访问 Zoho Mail 定价页面。 向下滚动到页面底部，找到 “Forever Free Plan” (永久免费计划) 区域。 点击 “Sign Up Now” (立即注册)。 输入您的域名、手机号码（必须验证）、管理员账号名称（如 admin 或 contact）和密码。 完成注册并登录到 Zoho Mail 的设置向导页面。 第二步：在 Cloudflare 中验证域名所有权 Zoho 需要确认这个域名是您的。它会提供一个 TXT 记录值（以 zoho-verification 开头）。\n在 Zoho 页面： 复制显示的 TXT 值（Destination/Points to）。 在 Cloudflare 页面： 登录 Cloudflare，点击您的域名。 在左侧菜单选择 DNS \u003e Records (记录)。 点击 Add record (添加记录)。 Type (类型): 选择 TXT。 Name (名称): 输入 @（代表根域名）。 Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。 点击 Save (保存)。 回到 Zoho 页面： 等待约 1 分钟，点击底部的 “Verify by TXT” (通过 TXT 验证)。 提示：Cloudflare 生效很快，通常几秒钟即可验证成功。 第三步：配置 MX 记录 (最关键一步) 这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。\n在 Cloudflare 页面：\n重要： 如果您之前有其他的 MX 记录（例如来自 Godaddy 或主机商的），请先删除它们，以免冲突。 点击 Add record。 Type: MX Name: @ Mail server: mx.zoho.com Priority: 10 点击 Save。 重复上述步骤，添加第二条和第三条（作为备用）：\nType: MX, Name: @, Server: mx2.zoho.com, Priority: 20 Type: MX, Name: @, Server: mx3.zoho.com, Priority: 50 回到 Zoho 页面： 点击 MX Lookup 或 Verify 按钮确认。\n第四步：配置 SPF 和 DKIM (防止被当做垃圾邮件) 为了让您发出的邮件不进入别人的垃圾箱，这两步必须做。\n1. 配置 SPF 在 Zoho 页面： 找到 SPF 配置部分，复制类似 v=spf1 include:zoho.com ~all 的值。 在 Cloudflare 页面： Add record \u003e Type: TXT \u003e Name: @ \u003e Content: v=spf1 include:zoho.com ~all。 点击 Save。 2. 配置 DKIM (强烈建议) 在 Zoho 页面： 进入管理控制台，找到 DKIM 设置。 选择您的域名，点击 Configure (配置)。 它会生成一个 Selector (通常您可以自定义，比如输入 zmail) 和一个长 TXT 值。 在 Cloudflare 页面： Add record \u003e Type: TXT。 Name: 输入 Zoho 提供的 Selector 名称，例如 zmail._domainkey (注意不要漏掉 ._domainkey 部分)。 Content: 粘贴 Zoho 生成的那一长串公钥代码。 点击 Save。 回到 Zoho 页面： 点击 Verify 验证 DKIM 签名。 第五步：完成设置与测试 创建用户： 在 Zoho 向导中，您可以跳过“邮件迁移”和“移动端下载”步骤，直接进入收件箱。 测试接收： 用您的个人 Gmail 给新邮箱发一封信。 测试发送： 用新邮箱回复一封信，并检查 Gmail 是否收到，以及是否进入了垃圾箱（如果 SPF/DKIM 设置正确，应该直接进入收件箱）。 ",
-  "wordCount" : "270",
-  "inLanguage": "en",
-  "datePublished": "2025-12-03T22:17:33+08:00",
-  "dateModified": "2025-12-03T22:17:33+08:00",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zkpykj.com/posts/cloudflare+domain+zohomail/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Welcome to ZKPYKJ Tech Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zkpykj.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-<body id="top">
-    <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zkpykj.com/" accesskey="h" title="Welcome to ZKPYKJ Tech Blog (Alt + H)">Welcome to ZKPYKJ Tech Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-        </ul>
-    </nav>
-</header>
-<main class="main">
+	
+  </head><body class="ma0 avenir bg-near-white production">
 
-<article class="post-single">
-  <header class="post-header">
     
-    <h1 class="post-title entry-hint-parent">
-      Cloudflare&#43;domain&#43;Zohomail
-    </h1>
-    <div class="post-meta"><span title='2025-12-03 22:17:33 +0800 CST'>December 3, 2025</span>
+   
+  
 
-</div>
-  </header> 
-  <div class="post-content"><p><strong>Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。</strong></p>
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Welcome to ZKPYKJ Tech Blog
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Posts
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Cloudflare&#43;domain&#43;Zohomail</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2025-12-03T22:17:33+08:00">December 3, 2025</time>
+      
+
+      
+      
+        
+        
+        <span class="f6 mv4 dib tracked"> - 2 minutes read </span>
+        <span class="f6 mv4 dib tracked"> - 270 words </span>
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><p><strong>Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。</strong></p>
 <p>请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 <strong>5 个用户</strong>，每个用户 <strong>5GB 空间</strong>，但<strong>不支持 POP/IMAP</strong>（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：</p>
 <hr>
-<h3 id="第一步注册-zoho-mail-免费版">第一步：注册 Zoho Mail 免费版<a hidden class="anchor" aria-hidden="true" href="#第一步注册-zoho-mail-免费版">#</a></h3>
+<h3 id="第一步注册-zoho-mail-免费版">第一步：注册 Zoho Mail 免费版</h3>
 <p>Zoho 经常隐藏免费版的入口，请仔细按照以下路径寻找：</p>
 <ol>
 <li>访问 <a href="https://www.zoho.com/mail/zohomail-pricing.html">Zoho Mail 定价页面</a>。</li>
@@ -267,7 +173,7 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 <li>完成注册并登录到 Zoho Mail 的设置向导页面。</li>
 </ol>
 <hr>
-<h3 id="第二步在-cloudflare-中验证域名所有权">第二步：在 Cloudflare 中验证域名所有权<a hidden class="anchor" aria-hidden="true" href="#第二步在-cloudflare-中验证域名所有权">#</a></h3>
+<h3 id="第二步在-cloudflare-中验证域名所有权">第二步：在 Cloudflare 中验证域名所有权</h3>
 <p>Zoho 需要确认这个域名是您的。它会提供一个 <code>TXT</code> 记录值（以 <code>zoho-verification</code> 开头）。</p>
 <ol>
 <li><strong>在 Zoho 页面：</strong> 复制显示的 <strong>TXT 值</strong>（Destination/Points to）。</li>
@@ -289,7 +195,7 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 </li>
 </ol>
 <hr>
-<h3 id="第三步配置-mx-记录-最关键一步">第三步：配置 MX 记录 (最关键一步)<a hidden class="anchor" aria-hidden="true" href="#第三步配置-mx-记录-最关键一步">#</a></h3>
+<h3 id="第三步配置-mx-记录-最关键一步">第三步：配置 MX 记录 (最关键一步)</h3>
 <p>这一步决定了别人发的邮件能准确投递到 Zoho 的服务器。</p>
 <ol>
 <li>
@@ -314,9 +220,9 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 </li>
 </ol>
 <hr>
-<h3 id="第四步配置-spf-和-dkim-防止被当做垃圾邮件">第四步：配置 SPF 和 DKIM (防止被当做垃圾邮件)<a hidden class="anchor" aria-hidden="true" href="#第四步配置-spf-和-dkim-防止被当做垃圾邮件">#</a></h3>
+<h3 id="第四步配置-spf-和-dkim-防止被当做垃圾邮件">第四步：配置 SPF 和 DKIM (防止被当做垃圾邮件)</h3>
 <p>为了让您发出的邮件不进入别人的垃圾箱，这两步必须做。</p>
-<h4 id="1-配置-spf">1. 配置 SPF<a hidden class="anchor" aria-hidden="true" href="#1-配置-spf">#</a></h4>
+<h4 id="1-配置-spf">1. 配置 SPF</h4>
 <ul>
 <li><strong>在 Zoho 页面：</strong> 找到 SPF 配置部分，复制类似 <code>v=spf1 include:zoho.com ~all</code> 的值。</li>
 <li><strong>在 Cloudflare 页面：</strong>
@@ -326,7 +232,7 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 </ul>
 </li>
 </ul>
-<h4 id="2-配置-dkim-强烈建议">2. 配置 DKIM (强烈建议)<a hidden class="anchor" aria-hidden="true" href="#2-配置-dkim-强烈建议">#</a></h4>
+<h4 id="2-配置-dkim-强烈建议">2. 配置 DKIM (强烈建议)</h4>
 <ul>
 <li><strong>在 Zoho 页面：</strong> 进入管理控制台，找到 <strong>DKIM</strong> 设置。
 <ul>
@@ -345,98 +251,40 @@ Content (内容): 粘贴刚刚从 Zoho 复制的一长串代码。
 <li><strong>回到 Zoho 页面：</strong> 点击 <strong>Verify</strong> 验证 DKIM 签名。</li>
 </ul>
 <hr>
-<h3 id="第五步完成设置与测试">第五步：完成设置与测试<a hidden class="anchor" aria-hidden="true" href="#第五步完成设置与测试">#</a></h3>
+<h3 id="第五步完成设置与测试">第五步：完成设置与测试</h3>
 <ol>
 <li><strong>创建用户：</strong> 在 Zoho 向导中，您可以跳过“邮件迁移”和“移动端下载”步骤，直接进入收件箱。</li>
 <li><strong>测试接收：</strong> 用您的个人 Gmail 给新邮箱发一封信。</li>
 <li><strong>测试发送：</strong> 用新邮箱回复一封信，并检查 Gmail 是否收到，以及是否进入了垃圾箱（如果 SPF/DKIM 设置正确，应该直接进入收件箱）。</li>
 </ol>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
 
 
-  </div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
+
+</aside>
+
+  </article>
+
     </main>
-    
-<footer class="footer">
-        <span>&copy; 2026 <a href="https://zkpykj.com/">Welcome to ZKPYKJ Tech Blog</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://zkpykj.com/" >
+    &copy;  Welcome to ZKPYKJ Tech Blog 2026 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+  </body>
 </html>

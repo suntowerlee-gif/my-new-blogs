@@ -1,4 +1,8 @@
 baseURL = 'https://zkpykj.com/'
-languageCode = 'en-us'
+languageCode = 'zh-cn'
 title = 'Welcome to ZKPYKJ Tech Blog'
-theme = "papermod"
+theme = "ananke"
+
+[params]
+  read_more_copy = "阅读全文"
+  show_reading_time = true
