@@ -9,8 +9,3 @@
   pageRef = "posts"
   weight = 20
 
-[[main]]
-  identifier = "github"
-  pre = "github"
-  url = "https://github.com/suntowerlee-gif"
-  weight = 100

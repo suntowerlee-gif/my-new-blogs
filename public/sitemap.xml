@@ -3,6 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
+    <loc>https://zkpykj.com/software/pdf-controlled-copy/</loc>
+    <lastmod>2026-11-05T09:20:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://zkpykj.com/software/word-to-pdf-windows/</loc>
     <lastmod>2026-11-05T09:10:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -16,13 +22,13 @@
   </url>
   <url>
     <loc>https://zkpykj.com/</loc>
-    <lastmod>2026-11-05T09:10:00+08:00</lastmod>
+    <lastmod>2026-11-05T09:20:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://zkpykj.com/software/</loc>
-    <lastmod>2026-11-05T09:10:00+08:00</lastmod>
+    <lastmod>2026-11-05T09:20:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

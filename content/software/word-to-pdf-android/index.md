@@ -11,8 +11,7 @@ tags = ["Android", "Word", "PDF", "小工具"]
 在手机上离线把 Word（.docx）批量转换为 PDF。不需要安装 Word，转换在手机本地完成，**文件不会上传到任何服务器**。
 {{< /lead >}}
 
-{{< button href="https://github.com/suntowerlee-gif/sunsoftware/raw/main/Word2PdfBatchAndroid/release/Word%E6%89%B9%E9%87%8F%E8%BD%ACPDF_Android_v1.0.apk" target="_blank" rel="noopener" >}}下载 v1.0（Android，APK 约 26 MB）{{< /button >}}&nbsp;&nbsp;
-{{< button href="https://github.com/suntowerlee-gif/sunsoftware/tree/main/Word2PdfBatchAndroid" target="_blank" rel="noopener" >}}说明与源码（GitHub）{{< /button >}}
+{{< button href="/downloads/Word2PdfBatch-Android-v1.0.apk" >}}下载 v1.0（Android，APK 约 26 MB）{{< /button >}}
 
 ## 功能
 
@@ -36,10 +35,10 @@ tags = ["Android", "Word", "PDF", "小工具"]
 ## 安装与授权
 
 1. 把 APK 文件传到手机上点击安装。如提示“禁止安装未知来源应用”，按提示在设置中允许本次安装即可（不同品牌手机的说法略有不同）
-2. 首次打开时显示本机 16 位设备码，点「发送给作者」可直接通过微信、邮件等发出
-3. 收到授权码后点「从剪贴板粘贴」，再点「激活」
+2. 首次打开时显示本机 16 位设备码，点「复制」
+3. 购买后按收据中的说明提供设备码，获得授权码；点「从剪贴板粘贴」，再点「激活」
 
-每台手机只需激活一次，授权码与 Windows 版使用同一套机制。卸载重装后设备码不变，可用同一个授权码重新激活；手机恢复出厂设置后设备码会变化，需要重新获取授权码。授权申请与使用问题请发邮件到 [suntowerlee@gmail.com](mailto:suntowerlee@gmail.com)。
+每台手机只需激活一次，授权码与 Windows 版使用同一套机制。卸载重装后设备码不变，可用同一个授权码重新激活；手机恢复出厂设置后设备码会变化，需要重新获取授权码。
 
 ## 更新记录
 

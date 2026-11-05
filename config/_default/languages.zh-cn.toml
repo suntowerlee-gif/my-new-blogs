@@ -18,7 +18,3 @@ title = "ZKPYKJ"
   image = "img/author.png"
   headline = "技术笔记 · 小工具 · 日常记录"
   bio = "记录工作中的技术笔记和日常观察，也发布自己开发的小软件。"
-  links = [
-    { github = "https://github.com/suntowerlee-gif" },
-    { email = "mailto:suntowerlee@gmail.com" },
-  ]

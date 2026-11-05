@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2026 Suntower Lee</copyright>
-    <lastBuildDate>Thu, 05 Nov 2026 09:10:00 +0800</lastBuildDate><atom:link href="https://zkpykj.com/tags/pdf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 Nov 2026 09:20:00 +0800</lastBuildDate><atom:link href="https://zkpykj.com/tags/pdf/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PDF 受控副本工具（PDF Controlled Copy）</title>
+      <link>https://zkpykj.com/software/pdf-controlled-copy/</link>
+      <pubDate>Thu, 05 Nov 2026 09:20:00 +0800</pubDate>
+      
+      <guid>https://zkpykj.com/software/pdf-controlled-copy/</guid>
+      <description>把任意 PDF 生成为带有效期的受控电子副本：有效期内正常阅读，过期后弹窗警告并隐藏正文；支持水印、页脚标识、AES-256 加密和批量处理。当前版本 v1.2。</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://zkpykj.com/software/pdf-controlled-copy/featured.jpg" />
+    </item>
     
     <item>
       <title>Word 批量转 PDF（Windows 版）</title>

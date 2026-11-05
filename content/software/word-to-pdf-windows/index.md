@@ -11,8 +11,8 @@ tags = ["Windows", "Word", "PDF", "小工具"]
 手动把 Word 转成 PDF，要逐个打开文档、点“另存为”、选 PDF、设置选项、选位置。**Word 批量转 PDF** 把这些步骤批量化：导入文件后设置一次，点「开始转换」即可。
 {{< /lead >}}
 
-{{< button href="https://github.com/suntowerlee-gif/sunsoftware/raw/main/Word2PdfBatch/release/Word%E6%89%B9%E9%87%8F%E8%BD%ACPDF.exe" target="_blank" rel="noopener" >}}下载 v1.1（Windows，.exe）{{< /button >}}&nbsp;&nbsp;
-{{< button href="https://github.com/suntowerlee-gif/sunsoftware/tree/main/Word2PdfBatch" target="_blank" rel="noopener" >}}说明与源码（GitHub）{{< /button >}}
+{{< button href="/downloads/Word2PdfBatch-v1.1.exe" >}}下载 v1.1（Windows，.exe，中文界面）{{< /button >}}&nbsp;&nbsp;
+{{< button href="/downloads/WordBatchToPDF-v1.1.exe" >}}Download v1.1 (English UI){{< /button >}}
 
 ## 版式与手动另存一致
 
@@ -54,18 +54,17 @@ tags = ["Windows", "Word", "PDF", "小工具"]
 
 ## 软件授权
 
-自 v1.1 起，软件需授权后使用，每台电脑只需激活一次：
+软件需授权后使用，每台电脑只需激活一次：
 
-1. 首次打开时显示本机 16 位机器码，点「复制」或「发邮件…」发给作者
-2. 收到授权码后粘贴到「授权码」框，点「激活」
+1. 首次打开时显示本机 16 位机器码，点「复制」
+2. 购买后按收据中的说明提供机器码，获得授权码
+3. 把授权码粘贴到「授权码」框，点「激活」
 
-授权码只对申请时的那台电脑有效，可设置永久或到期日；重装系统或更换系统盘后需要重新获取授权码。授权申请与使用问题请发邮件到 [suntowerlee@gmail.com](mailto:suntowerlee@gmail.com)。
+授权码只对申请时的那台电脑有效；重装系统或更换系统盘后需要重新获取授权码。
 
 ## 英文界面版
 
-功能与中文版 v1.1 相同，界面为全英文，授权码通用。
-
-{{< button href="https://github.com/suntowerlee-gif/sunsoftware/raw/main/Word2PdfBatch_EN/release/WordBatchToPDF.exe" target="_blank" rel="noopener" >}}Download English edition (v1.1){{< /button >}}
+功能与中文版 v1.1 相同，界面为全英文，授权码通用。上方的 “Download v1.1 (English UI)” 即为英文界面版。
 
 ## 更新记录
 
