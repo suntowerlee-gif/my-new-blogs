@@ -1,0 +1,24 @@
+disabled = false
+languageCode = "zh-cn"
+languageName = "简体中文"
+weight = 1
+title = "ZKPYKJ"
+
+[params]
+  displayName = "简体中文"
+  isoCode = "zh-cn"
+  rtl = false
+  dateFormat = "2006-01-02"
+  logo = "img/logo.png"
+  description = "技术笔记、小工具与日常记录"
+  copyright = "© 2026 Suntower Lee"
+
+[params.author]
+  name = "Suntower Lee"
+  image = "img/author.png"
+  headline = "技术笔记 · 小工具 · 日常记录"
+  bio = "记录工作中的技术笔记和日常观察，也发布自己开发的小软件。"
+  links = [
+    { github = "https://github.com/suntowerlee-gif" },
+    { email = "mailto:suntowerlee@gmail.com" },
+  ]

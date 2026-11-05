@@ -1,0 +1,16 @@
+# -- Main menu (header) --
+[[main]]
+  name = "软件"
+  pageRef = "software"
+  weight = 10
+
+[[main]]
+  name = "博客"
+  pageRef = "posts"
+  weight = 20
+
+[[main]]
+  identifier = "github"
+  pre = "github"
+  url = "https://github.com/suntowerlee-gif"
+  weight = 100

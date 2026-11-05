@@ -1,0 +1,5 @@
+/* Card thumbnails keep the artwork's 1200x630 ratio instead of the theme's fixed 200px height */
+.thumbnail_card {
+  height: auto;
+  aspect-ratio: 1200 / 630;
+}

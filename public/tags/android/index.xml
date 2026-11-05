@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on ZKPYKJ</title>
+    <link>https://zkpykj.com/tags/android/</link>
+    <description>Recent content in Android on ZKPYKJ</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© 2026 Suntower Lee</copyright>
+    <lastBuildDate>Thu, 05 Nov 2026 09:00:00 +0800</lastBuildDate><atom:link href="https://zkpykj.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Word 批量转 PDF（Android 版）</title>
+      <link>https://zkpykj.com/software/word-to-pdf-android/</link>
+      <pubDate>Thu, 05 Nov 2026 09:00:00 +0800</pubDate>
+      
+      <guid>https://zkpykj.com/software/word-to-pdf-android/</guid>
+      <description>在手机上离线批量把 .docx 转为 PDF：不需要安装 Word，文件不会上传到任何服务器。当前版本 v1.0，支持 Android 10 及以上。</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://zkpykj.com/software/word-to-pdf-android/featured.jpg" />
+    </item>
+    
+  </channel>
+</rss>
