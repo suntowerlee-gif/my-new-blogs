@@ -11,8 +11,7 @@ tags = ["Windows", "Word", "PDF", "小工具"]
 手动把 Word 转成 PDF，要逐个打开文档、点“另存为”、选 PDF、设置选项、选位置。**Word 批量转 PDF** 把这些步骤批量化：导入文件后设置一次，点「开始转换」即可。
 {{< /lead >}}
 
-{{< button href="/downloads/Word2PdfBatch-v1.1.exe" >}}下载 v1.1（Windows，.exe，中文界面）{{< /button >}}&nbsp;&nbsp;
-{{< button href="/downloads/WordBatchToPDF-v1.1.exe" >}}Download v1.1 (English UI){{< /button >}}
+{{< button href="https://suntower.gumroad.com/l/liztm" target="_blank" rel="noopener" >}}在 Gumroad 购买（含中、英文界面版）{{< /button >}}
 
 ## 版式与手动另存一致
 
@@ -56,15 +55,15 @@ tags = ["Windows", "Word", "PDF", "小工具"]
 
 软件需授权后使用，每台电脑只需激活一次：
 
-1. 首次打开时显示本机 16 位机器码，点「复制」
-2. 购买后按收据中的说明提供机器码，获得授权码
+1. 在 Gumroad 购买并下载软件
+2. 首次打开时显示本机 16 位机器码，点「复制」，按 Gumroad 收据中的说明发给作者，获得授权码
 3. 把授权码粘贴到「授权码」框，点「激活」
 
 授权码只对申请时的那台电脑有效；重装系统或更换系统盘后需要重新获取授权码。
 
 ## 英文界面版
 
-功能与中文版 v1.1 相同，界面为全英文，授权码通用。上方的 “Download v1.1 (English UI)” 即为英文界面版。
+功能与中文版 v1.1 相同，界面为全英文，授权码通用。购买后可同时下载中文界面版和英文界面版。
 
 ## 更新记录
 

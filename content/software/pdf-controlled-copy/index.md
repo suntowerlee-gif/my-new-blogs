@@ -11,9 +11,7 @@ tags = ["Windows", "PDF", "文件控制", "小工具"]
 SOP、方法、标准等电子文件被下载、转发后，常常在新版本生效后仍被继续使用。**PDF 受控副本工具**为 PDF 生成带有效期的「受控电子副本」，原理与企业文件管理系统发布的受控 PDF 相同。
 {{< /lead >}}
 
-{{< button href="/downloads/PDFControlledCopy-v1.2-CN.exe" >}}下载 v1.2（中文版，.exe）{{< /button >}}&nbsp;&nbsp;
-{{< button href="/downloads/PDFControlledCopy-v1.2-EN.exe" >}}Download v1.2 (English){{< /button >}}&nbsp;&nbsp;
-{{< button href="https://suntower.gumroad.com/l/keewo" target="_blank" rel="noopener" >}}Gumroad 购买{{< /button >}}
+{{< button href="https://suntower.gumroad.com/l/keewo" target="_blank" rel="noopener" >}}在 Gumroad 购买{{< /button >}}
 
 ## 不同阅读器中的效果
 
@@ -43,8 +41,8 @@ SOP、方法、标准等电子文件被下载、转发后，常常在新版本�
 
 软件需授权后使用，每台电脑只需激活一次：
 
-1. 首次打开时显示本机 16 位机器码，点「复制」
-2. 在 Gumroad 购买后，按收据中的说明提供机器码，获得授权码
+1. 在 Gumroad 购买并下载软件
+2. 首次打开时显示本机 16 位机器码，点「复制」，按 Gumroad 收据中的说明发给作者，获得授权码
 3. 把授权码粘贴到「授权码」框，点「激活」
 
 中文版与英文版共用授权码；授权码只对申请时的那台电脑有效，重装系统或更换系统盘后需要重新获取。本软件仅限个人使用。
