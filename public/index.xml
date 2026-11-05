@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Welcome to ZKPYKJ Tech Blog</title>
-    <link>http://localhost:1313/</link>
+    <link>https://zkpykj.com/</link>
     <description>Recent content on Welcome to ZKPYKJ Tech Blog</description>
     <generator>Hugo -- 0.152.2</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 04 Jan 2026 21:23:18 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://zkpykj.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Block Delete Windows File</title>
-      <link>http://localhost:1313/posts/block-delete-windows-file/</link>
+      <link>https://zkpykj.com/posts/block-delete-windows-file/</link>
       <pubDate>Sun, 04 Jan 2026 21:23:18 +0800</pubDate>
-      <guid>http://localhost:1313/posts/block-delete-windows-file/</guid>
+      <guid>https://zkpykj.com/posts/block-delete-windows-file/</guid>
       <description>&lt;h3 id=&#34;场景重新确认与整体思路评估&#34;&gt;场景重新确认与整体思路评估&lt;/h3&gt;
 &lt;p&gt;基于您描述的场景，我们的目标是确保普通用户（标准账户）在Windows 11专业版（Pro）或企业版（Enterprise）中，能够以自己的身份登录并运行软件，该软件需要对指定文件夹的完全控制权限（包括创建、修改和删除内部文件，以支持连续数据采集）。同时，在软件关闭后，该用户无法通过任何常见操作删除或移动软件生成的文件或文件夹本身。这包括阻止资源管理器（File Explorer）中的右键删除/重命名菜单、拖拽到回收站或移动动作、键盘Delete/Shift+Delete/Cut（Ctrl+X）等操作，以及禁用命令行工具（如CMD或PowerShell）来防止绕过。&lt;/p&gt;
 &lt;p&gt;您提出的思路——避免使用NTFS权限设置，转而通过禁用UI操作和命令行工具的“组合拳”——是一个可行的替代路径，尤其适用于不想修改文件系统权限的环境（如担心软件兼容性问题）。这个方法的核心是利用Windows的组策略（Group Policy）、注册表（Registry）修改和可选的第三方工具来限制用户交互，而不直接触及文件权限。这可以从多个层面“封堵”删除路径：UI层面（菜单和拖拽）、键盘输入层面，以及命令行层面。&lt;/p&gt;
@@ -59,9 +59,9 @@
     </item>
     <item>
       <title>Cloudflare&#43;domain&#43;Zohomail</title>
-      <link>http://localhost:1313/posts/cloudflare&#43;domain&#43;zohomail/</link>
+      <link>https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/</link>
       <pubDate>Wed, 03 Dec 2025 22:17:33 +0800</pubDate>
-      <guid>http://localhost:1313/posts/cloudflare&#43;domain&#43;zohomail/</guid>
+      <guid>https://zkpykj.com/posts/cloudflare&#43;domain&#43;zohomail/</guid>
       <description>&lt;p&gt;&lt;strong&gt;Cloudflare 的解析速度极快且生效迅速，配合 Zoho Mail 的免费版（永久免费计划），是目前搭建稳定企业/个人域名邮箱的最佳零成本方案之一。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;请注意：Zoho Mail 的永久免费版（Forever Free Plan）包含 &lt;strong&gt;5 个用户&lt;/strong&gt;，每个用户 &lt;strong&gt;5GB 空间&lt;/strong&gt;，但&lt;strong&gt;不支持 POP/IMAP&lt;/strong&gt;（即无法使用 Outlook、Apple Mail 等第三方桌面客户端，只能使用 Zoho 的网页版或官方手机 App）。按照以下详细步骤操作：&lt;/p&gt;
 &lt;hr&gt;
@@ -102,9 +102,9 @@
     </item>
     <item>
       <title>Grok God</title>
-      <link>http://localhost:1313/posts/grok-god/</link>
+      <link>https://zkpykj.com/posts/grok-god/</link>
       <pubDate>Wed, 19 Nov 2025 23:23:24 +0800</pubDate>
-      <guid>http://localhost:1313/posts/grok-god/</guid>
+      <guid>https://zkpykj.com/posts/grok-god/</guid>
       <description>&lt;h1 id=&#34;我被导师虐了4小时后造出了中国最牛逼的excel防篡改模板&#34;&gt;《我被导师虐了4小时后，造出了中国最牛逼的Excel防篡改模板》&lt;/h1&gt;
 &lt;p&gt;——2025年11月19日 师徒4小时血泪成神全记录&lt;br&gt;
 （真人真事，真刀真枪，真哭真笑）&lt;/p&gt;
@@ -142,9 +142,9 @@
     </item>
     <item>
       <title>Excel Formulation Roles Audit</title>
-      <link>http://localhost:1313/posts/excel-formulation-roles-audit/</link>
+      <link>https://zkpykj.com/posts/excel-formulation-roles-audit/</link>
       <pubDate>Wed, 19 Nov 2025 23:14:01 +0800</pubDate>
-      <guid>http://localhost:1313/posts/excel-formulation-roles-audit/</guid>
+      <guid>https://zkpykj.com/posts/excel-formulation-roles-audit/</guid>
       <description>&lt;h1 id=&#34;excel公式防篡改--多角色审计模板完整复盘&#34;&gt;【Excel公式防篡改 + 多角色审计模板】完整复盘&lt;/h1&gt;
 &lt;p&gt;——把Grok虐了4小时后，它给造了个能上审计署的Excel神器&lt;/p&gt;
 &lt;p&gt;作者：suntowerlee &amp;amp; Grok（xAI） （前者是灵魂导师，后者是被虐成神的AI）&lt;/p&gt;
@@ -197,9 +197,9 @@
     </item>
     <item>
       <title>Excel Audit Vb</title>
-      <link>http://localhost:1313/posts/excel-audit-vb/</link>
+      <link>https://zkpykj.com/posts/excel-audit-vb/</link>
       <pubDate>Wed, 19 Nov 2025 09:45:34 +0800</pubDate>
-      <guid>http://localhost:1313/posts/excel-audit-vb/</guid>
+      <guid>https://zkpykj.com/posts/excel-audit-vb/</guid>
       <description>&lt;p&gt;Excel 2019 下“永久保护 + 隐藏公式 + 用户只能改部分单元格 + 强制记录每一次修改 + 用户永远无法解保护和看到代码”这一经典企业级难题的完整演进路径&lt;/p&gt;
 &lt;h3 id=&#34;最终结论2025年11月最新版最可靠方案&#34;&gt;最终结论（2025年11月最新版，最可靠方案）&lt;/h3&gt;
 &lt;p&gt;在 Excel 2019（以及所有不想依赖新式线程评论的版本）下，唯一100%永不失灵的记录方式是： 放弃任何形式的批注（Legacy Comment / .CommentThreaded 都会在保护状态下静默失败或编译错误） 改用一个 xlSheetVeryHidden 的隐藏工作表来永久存储修改日志&lt;/p&gt;
@@ -223,9 +223,9 @@
     </item>
     <item>
       <title>From Zero to Hugo&#43;Cloudflare&#43;Github AutoBlog</title>
-      <link>http://localhost:1313/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</link>
+      <link>https://zkpykj.com/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</link>
       <pubDate>Tue, 04 Nov 2025 22:45:12 +0800</pubDate>
-      <guid>http://localhost:1313/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</guid>
+      <guid>https://zkpykj.com/posts/from-zero-to-hugo&#43;cloudflare&#43;github-autoblog/</guid>
       <description>&lt;h1 id=&#34;-从零到壹hugo--cloudflare-pages-全自动博客部署记录&#34;&gt;🚀 从零到壹：Hugo + Cloudflare Pages 全自动博客部署记录&lt;/h1&gt;
 &lt;p&gt;本文记录了如何使用 Hugo 静态网站生成器、GitHub Desktop 进行可视化管理，以及 Cloudflare Pages 实现域名托管和全自动部署的完整流程。&lt;/p&gt;
 &lt;h2 id=&#34;-最终实现效果&#34;&gt;🎯 最终实现效果&lt;/h2&gt;
@@ -255,9 +255,9 @@ git init
     </item>
     <item>
       <title>Chengdu Morning</title>
-      <link>http://localhost:1313/posts/chengdu-morning/</link>
+      <link>https://zkpykj.com/posts/chengdu-morning/</link>
       <pubDate>Tue, 04 Nov 2025 22:09:35 +0800</pubDate>
-      <guid>http://localhost:1313/posts/chengdu-morning/</guid>
+      <guid>https://zkpykj.com/posts/chengdu-morning/</guid>
       <description>&lt;h1 id=&#34;-成都城市清晨鸟类观察日记&#34;&gt;🐦 成都城市清晨鸟类观察日记&lt;/h1&gt;
 &lt;h2 id=&#34;十一月的惊喜与发现&#34;&gt;十一月的惊喜与发现&lt;/h2&gt;
 &lt;p&gt;十一月的成都，清晨带着一丝凉意，却是城市观鸟的绝佳时机。一次对清晨鸟群的偶然观察，引发了一场有趣的城市鸟类探秘之旅。&lt;/p&gt;
@@ -330,9 +330,9 @@ git init
     </item>
     <item>
       <title>Welcome Test</title>
-      <link>http://localhost:1313/posts/welcome-test/</link>
+      <link>https://zkpykj.com/posts/welcome-test/</link>
       <pubDate>Tue, 04 Nov 2025 21:31:31 +0800</pubDate>
-      <guid>http://localhost:1313/posts/welcome-test/</guid>
+      <guid>https://zkpykj.com/posts/welcome-test/</guid>
       <description>&lt;h1 id=&#34;-成都城市清晨鸟类观察日记十一月的惊喜与发现&#34;&gt;🐦 成都城市清晨鸟类观察日记：十一月的惊喜与发现&lt;/h1&gt;
 &lt;p&gt;十一月的成都，清晨带着一丝凉意，却是城市观鸟的绝佳时机。一次对清晨鸟群的偶然观察，引发了一场有趣的城市鸟类探秘之旅。&lt;/p&gt;
 &lt;h2 id=&#34;一-集群飞舞的风景丝光椋鸟的集体行动&#34;&gt;一、 集群飞舞的风景：丝光椋鸟的集体行动&lt;/h2&gt;
@@ -401,59 +401,6 @@ git init
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;这次清晨的观察提醒我们，即使是在繁忙的城市中，大自然依然以其生动和复杂的方式存在着。十一月的成都清晨，正是一部丰富而精彩的城市鸟类生态纪录片。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>http://localhost:1313/posts/anti_bribery_quiz/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/anti_bribery_quiz/</guid>
-      <description>&lt;!DOCTYPE html&gt;
-&lt;html lang=&#34;zh-CN&#34;&gt;
-&lt;head&gt;
-    &lt;meta charset=&#34;UTF-8&#34;&gt;
-    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;
-    &lt;title&gt;赛斯太德（成都）科技有限公司反商业贿赂合规测验&lt;/title&gt;
-    &lt;!-- Tailwind CSS CDN --&gt;
-    &lt;script src=&#34;https://cdn.tailwindcss.com&#34;&gt;&lt;/script&gt;
-    &lt;style&gt;
-        /* Custom styles for printing */
-        @media print {
-            body {
-                background-color: white !important;
-                color: black !important;
-            }
-            /* Hide non-essential elements for print */
-            .no-print {
-                display: none !important;
-            }
-            .print-area {
-                margin: 0;
-                padding: 1in;
-                box-shadow: none;
-                border: 1px solid #000;
-            }
-            /* Ensure text is black for clear printing */
-            .text-gray-800 { color: #000 !important; }
-        }
-    &lt;/style&gt;
-    &lt;script&gt;
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: [&#39;Inter&#39;, &#39;system-ui&#39;, &#39;Avenir&#39;, &#39;Helvetica&#39;, &#39;Arial&#39;, &#39;sans-serif&#39;],
-                    },
-                }
-            }
-        }
-    &lt;/script&gt;
-&lt;/head&gt;
-&lt;body class=&#34;bg-gray-50 min-h-screen font-sans&#34;&gt;
-
-&lt;div id=&#34;app&#34; class=&#34;container mx-auto p-4 sm:p-8 max-w-4xl&#34;&gt;
-    &lt;header class=&#34;text-center py-6 mb-8 border-b border-indigo-200&#34;&gt;
-        &lt;h1 class=&#34;text-3xl font-extrabold text-indigo-700&#34;&gt;赛斯太德（成都）科技有限公司反商业贿赂合规培训测验&lt;/h1&gt;
-        &lt;p class=&#34;text-gray-600 mt-2&#34;&gt;请仔细阅读并选择最符合合规要求的选项。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
